@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NPC.cs">
+    <Files>
+      <File FileName="Assets/Scripts/King.cs" Line="228" Column="4" />
+      <File FileName="Assets/Scripts/NPC.cs" Line="248" Column="10" />
+      <File FileName="Assets/Scripts/Platform.cs" Line="57" Column="27" />
+      <File FileName="Assets/Scripts/Structures/House.cs" Line="7" Column="25" />
+      <File FileName="Assets/Scripts/Structures/Farm.cs" Line="34" Column="33" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

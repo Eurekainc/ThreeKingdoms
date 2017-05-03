@@ -51,6 +51,13 @@
      <Compile Include="Assets\Scripts\NPC.cs" />
      <Compile Include="Assets\Scripts\NavMeshSourceTag.cs" />
      <Compile Include="Assets\Scripts\Platform.cs" />
+     <Compile Include="Assets\Scripts\Structures\Castle.cs" />
+     <Compile Include="Assets\Scripts\Structures\Farm.cs" />
+     <Compile Include="Assets\Scripts\Structures\Forrest.cs" />
+     <Compile Include="Assets\Scripts\Structures\House.cs" />
+     <Compile Include="Assets\Scripts\Structures\Mine.cs" />
+     <Compile Include="Assets\Scripts\Structures\Quarry.cs" />
+     <Compile Include="Assets\Scripts\Structures\Workshop.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
