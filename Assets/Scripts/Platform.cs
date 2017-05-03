@@ -6,6 +6,8 @@ public class Platform : MonoBehaviour {
 
 	public King kingScript;
 
+	public GameObject[] models;// model array ordered by level
+
 	public bool docks = false;
 	public bool farming = false;
 	public bool logging = false;
@@ -30,7 +32,16 @@ public class Platform : MonoBehaviour {
 		
 	}
 
-	public void ActivateStructure(){
+	public void ActivateStructure ()
+	{
+		for (int i = 0; i < models.Length; i++) {
+			if (i == level) {
+				models [i].SetActive (true);
+			} else {
+				models [i].SetActive (false);
+			}
+		}
+
 		if (housing) {
 			Debug.Log("House completed");
 			House houseScript = GetComponent<House>();

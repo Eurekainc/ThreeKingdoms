@@ -9,6 +9,8 @@ public class King : MonoBehaviour {
 	private float currentTime = 0.0f;
 	public int days = 0;
 
+	public float setUpDelay = 1.0f;// pause in seconds before work tasks are assigned
+
 	// POPULATION THREASHHOLDS
 	public int minPopulation = 5;// 5 or more population means we can start building a castle
 	public int minMilitaryPopulation = 10;// 10 or more population means we can start training archers
@@ -21,7 +23,7 @@ public class King : MonoBehaviour {
 
 	[HideInInspector]
 	public List<Platform> farmingPlatforms = new List<Platform>();
-	[HideInInspector]
+//	[HideInInspector]
 	public List<Platform> farmingPlatformsUnderConstruction = new List<Platform>();// busy being constructed by builder
 	[HideInInspector]
 	public List<Platform> builtFarmingPlatforms = new List<Platform>();// ready to be farmed
@@ -40,7 +42,7 @@ public class King : MonoBehaviour {
 
 	[HideInInspector]
 	public List<Platform> housingPlatforms = new List<Platform>();
-	[HideInInspector]
+//	[HideInInspector]
 	public List<Platform> housingPlatformsUnderConstruction = new List<Platform>();// busy being constructed by builder
 	[HideInInspector]
 	public List<Platform> builtHousingPlatforms = new List<Platform>();// ready to be fed
@@ -86,6 +88,19 @@ public class King : MonoBehaviour {
 	public float reloadTime = 2.0f;
 
 
+	// Threashold values for assigning peasant and builder work task lists
+	public int foodThreashold = 5;
+	public int woodThreashold = 10;
+	public int stoneThreashold = 5;
+	public int metalThreashold = 2;
+
+	public int peasantThreashold = 5;
+
+	public int maxPopulationPerPlatform = 5;// if there are more peasants per platform than this then more platforms are built
+
+
+
+
 	public float resourcePickupWaitTime = 1.0f;// this is the delay that builders have before picking up a resource... allows player time to take the resource first
 	// resources
 //	public int food = 0;// 0
@@ -114,26 +129,14 @@ public class King : MonoBehaviour {
 	public int archeryTower = 0;
 	public int boats = 0;
 
-	// ITEM COSTS
-	public int[] farmCost = new int[4];
-	//public int[] forrestCost = new int[4];// forrest is free
-	public int[] quarryCost = new int[4];
-	public int[] houseCost = new int[4];
-	public int[] workshopCost = new int[4];
-	public int[] keepCost = new int[4];
-	public int[] castleCost = new int[4];
-	public int[] archeryRangeCost = new int[4];
-	public int[] archeryLookoutCost = new int[4];
-	public int[] archeryTowerCost = new int[4];
-
-	public int[] boatCost = new int[4];
-
-	public int[] peasantCost = new int[4];
-	public int[] builderCost = new int[4];
-	public int[] archerCost = new int[4];
 
 	// TRACK CONSTRUCTION
 	public List<Platform> platformsUnderConstruction = new List<Platform>();
+
+
+	// Track task lists for epasants and builders
+	public List<Platform> peasantTasks = new List<Platform>();
+	public List<Platform> builderTasks = new List<Platform>();
 
 	// Use this for initialization
 	void Awake ()
@@ -181,6 +184,116 @@ public class King : MonoBehaviour {
 
 		// the init function
 //		DecideAction();
+
+//		SetTaskList();// cant call this here because NPC scripts arent ready
+
+	}
+
+	void Start(){
+		StartCoroutine(FirstTaskAssignments());
+	}
+	IEnumerator FirstTaskAssignments(){
+		yield return new WaitForSeconds(setUpDelay);
+		SetTaskList ();
+	}
+
+	public void SetTaskList ()
+	{
+		// reset the peasant task lists
+		peasantTasks = new List<Platform> ();
+
+		// 1. assign resource gathering first
+		// 2. assign building tasks
+
+		// RESOURCE TASKS LIST SETUP
+		// 		- building tasks assigned by resource tasks take priority so are assigned to list first
+		// the order of these functions is important, farms will feature lower on the list than mines and so will be attended to first
+		AssignPeasantTaskList (0, foodThreashold, builtFarmingPlatforms);
+		AssignPeasantTaskList (1, woodThreashold, loggingPlatforms);
+		AssignPeasantTaskList (2, stoneThreashold, quarryPlatforms);
+		Debug.Log("peasants.Count: " + peasants.Count);
+		Debug.Log("peasants.Count < threashold? : " + (peasants.Count < peasantThreashold));
+		if (peasants.Count < peasantThreashold) {
+			//builderTasks.Add(miningPlatformsUnderConstruction[0]);
+
+			Debug.Log("builtHousingPlatforms.Count: " + builtHousingPlatforms.Count);
+			Debug.Log("housingPlatforms.Count: " + housingPlatforms.Count);
+
+			if (builtHousingPlatforms.Count < housingPlatforms.Count) {
+				// build some houses
+				if (!builderTasks.Contains (housingPlatformsUnderConstruction [0])) {
+					builderTasks.Add (housingPlatformsUnderConstruction [0]);
+				}
+			}
+		}
+		AssignPeasantTaskList (3, metalThreashold, builtMiningPlatforms);
+
+
+		// Update all NPC tasks
+		for (int i = 0; i < npcScripts.Count; i++) {
+			npcScripts[i].FindTask();
+		}
+
+
+		/// alternate algorithm.... to permanently assign peasants to tasks
+		// for each peasant
+		// if no food -> assign to farming(... maybe wait at farm until its built?)
+		// if no wood -> assign to forrest
+		// if no stone -> assign to quarry
+		// if farm, house built then assign 1 peasant to mining (cap mining at max number of peasants)
+
+		// maybe just turn off calling SetTaskList, after each resource dropoff, at least for peasants, builders should probably still update
+
+	}
+
+	void AssignPeasantTaskList (int resourceIndex, int threashold, List<Platform> platforms)
+	{
+		if (availableResources [resourceIndex] < threashold) {
+			if (platforms.Count > 0) {
+				int[] platformPopulation = new int[platforms.Count];
+				for (int i = 0; i < platforms.Count; i++) {
+					if (platformPeasant.ContainsKey (platforms [i])) {
+						platformPopulation [i] = platformPeasant [platforms [i]];
+					} else {
+						platformPopulation [i] = 0;
+					}
+				}
+				int minPopulation = Mathf.Min (platformPopulation);
+				int platformIndex = System.Array.IndexOf (platformPopulation, minPopulation);
+				peasantTasks.Add (platforms [platformIndex]);
+
+				if (resourceIndex == 0 || resourceIndex == 3) {
+					if (minPopulation >= maxPopulationPerPlatform) {
+						if (resourceIndex == 0) {
+							Debug.Log ("Build more farms");
+							if (!builderTasks.Contains(farmingPlatformsUnderConstruction[0])){
+								builderTasks.Add(farmingPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
+							}
+						} else if (resourceIndex == 3) {
+							Debug.Log ("Build more mines");
+							if (!builderTasks.Contains(miningPlatformsUnderConstruction[0])){
+								builderTasks.Add(miningPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
+							}
+						}
+					}
+				}
+
+			} else {
+				if (resourceIndex == 0 || resourceIndex == 3) {
+					if (resourceIndex == 0) {
+						Debug.Log ("Build first farm");
+						if (!builderTasks.Contains(farmingPlatformsUnderConstruction[0])){
+							builderTasks.Add(farmingPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
+						}
+					} else if (resourceIndex == 3) {
+						Debug.Log ("Build first mine");
+						if (!builderTasks.Contains(miningPlatformsUnderConstruction[0])){
+							builderTasks.Add(miningPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	// Update is called once per frame
@@ -214,6 +327,7 @@ public class King : MonoBehaviour {
 				archers.Add(npcScripts[i]);
 			}
 		}
+		SetTaskList ();
 	}
 
 	// INFORM BUILDER THAT RESOURCE HAS ARRIVED --- used in NPC.cs

@@ -22,12 +22,12 @@ public class House : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if (peasantsToSpawn > 0 && platformScript.level > 0) {
-			elapsedTime += Time.deltaTime;
-			if (elapsedTime >= timeToRequestFood) {
-				RequestFood();
-			}
-		}
+//		if (peasantsToSpawn > 0 && platformScript.level > 0) {
+//			elapsedTime += Time.deltaTime;
+//			if (elapsedTime >= timeToRequestFood) {
+//				RequestFood();
+//			}
+//		}
 	}
 
 	public void Activate ()
@@ -36,20 +36,28 @@ public class House : MonoBehaviour {
 			case 0:
 				kingScript.houses++;
 				platformScript.level++;
-				// reset house cost so that builder brings necessary resources
-				platformScript.cost[0] = peasantsToSpawn;// need 3 food to create 3 peasants
-				platformScript.cost[1] = 0;
-				platformScript.cost[2] = 0;
+				// cost to upgrade to keep
+				platformScript.cost[0] = 10;// need 3 food to create 3 peasants
+				platformScript.cost[1] = 15;
+				platformScript.cost[2] = 5;
 				platformScript.cost[3] = 0;
+
+				// simplification once a house is built it just spawns peasants
+				CreatePeasants ();
+
+				// add the house to the "Houses Under Construction list"
+//				kingScript.housingPlatformsUnderConstruction.Add(platformScript);// builders should now prioritize this as if it were a house to be built
+
 				break;
 			case 1:
 				Debug.Log("Next Upgrade -> Castle");
 				CreatePeasants ();
 				platformScript.level++;
-				platformScript.cost[0] = 5;// need 3 food to create 3 peasants
-				platformScript.cost[1] = 5;
-				platformScript.cost[2] = 15;
-				platformScript.cost[3] = 2;
+			// cost to upgrade to Castle
+				platformScript.cost[0] = 20;
+				platformScript.cost[1] = 15;
+				platformScript.cost[2] = 30;
+				platformScript.cost[3] = 5;
 				break;
 			case 2:
 				Debug.Log("Activate castle model");
@@ -65,15 +73,18 @@ public class House : MonoBehaviour {
 		for (int i = 0; i < peasantsToSpawn; i++) {
 			GameObject peasant = (GameObject)Instantiate (peasantPrefab, transform.position, Quaternion.identity);
 			kingScript.npcs.Add (peasant);
-			kingScript.npcScripts.Add (peasant.GetComponent<NPC> ());
-			kingScript.UpdatePeasantCount ();
-			peasantsToSpawn = 0;
+			NPC peasantScript = peasant.GetComponent<NPC> ();
+			peasantScript.kingScript = kingScript;
+			kingScript.npcScripts.Add (peasantScript);
+//			peasantScript.Init();
 		}
+		StartCoroutine(RecruitPeasantsInSystem());// put this in a coroutine to give the peasants a chance to run Awake() and Start(), before being accessed by the Kingscript
+		peasantsToSpawn = 0;
 	}
 
-	void RequestFood(){
-		Debug.Log("REQUEST FOOD");
-		kingScript.FeedHouse(platformScript);
+	IEnumerator RecruitPeasantsInSystem(){
+		yield return new WaitForSeconds(0.1f);
+		kingScript.UpdatePeasantCount ();// this also updates the task list for all NPCs in King.cs
 	}
 
 
