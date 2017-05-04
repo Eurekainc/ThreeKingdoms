@@ -114,6 +114,7 @@ public class King : MonoBehaviour {
 	public int[] availableResources = new int[4];
 
 	// builder's queue to wait for resources
+	private bool checkingResourceArrived = false;
 	public List<NPC> resourceQueue = new List<NPC>();
 
 	// structures
@@ -137,6 +138,11 @@ public class King : MonoBehaviour {
 	// Track task lists for epasants and builders
 	public List<Platform> peasantTasks = new List<Platform>();
 	public List<Platform> builderTasks = new List<Platform>();
+
+
+	// Archers adn attack logic
+	public bool enemySighted = false;
+	public Transform enemyTransform;
 
 	// Use this for initialization
 	void Awake ()
@@ -182,118 +188,24 @@ public class King : MonoBehaviour {
 
 		king = npcScripts[0];// assign the first NPC to be the king
 
-		// the init function
-//		DecideAction();
-
-//		SetTaskList();// cant call this here because NPC scripts arent ready
-
 	}
 
 	void Start(){
 		StartCoroutine(FirstTaskAssignments());
 	}
+
 	IEnumerator FirstTaskAssignments(){
 		yield return new WaitForSeconds(setUpDelay);
-		SetTaskList ();
+		SetNPCTasks ();
 	}
 
-	public void SetTaskList ()
+	public void SetNPCTasks ()
 	{
-		// reset the peasant task lists
-		peasantTasks = new List<Platform> ();
-
-		// 1. assign resource gathering first
-		// 2. assign building tasks
-
-		// RESOURCE TASKS LIST SETUP
-		// 		- building tasks assigned by resource tasks take priority so are assigned to list first
-		// the order of these functions is important, farms will feature lower on the list than mines and so will be attended to first
-		AssignPeasantTaskList (0, foodThreashold, builtFarmingPlatforms);
-		AssignPeasantTaskList (1, woodThreashold, loggingPlatforms);
-		AssignPeasantTaskList (2, stoneThreashold, quarryPlatforms);
-		Debug.Log("peasants.Count: " + peasants.Count);
-		Debug.Log("peasants.Count < threashold? : " + (peasants.Count < peasantThreashold));
-		if (peasants.Count < peasantThreashold) {
-			//builderTasks.Add(miningPlatformsUnderConstruction[0]);
-
-			Debug.Log("builtHousingPlatforms.Count: " + builtHousingPlatforms.Count);
-			Debug.Log("housingPlatforms.Count: " + housingPlatforms.Count);
-
-			if (builtHousingPlatforms.Count < housingPlatforms.Count) {
-				// build some houses
-				if (!builderTasks.Contains (housingPlatformsUnderConstruction [0])) {
-					builderTasks.Add (housingPlatformsUnderConstruction [0]);
-				}
-			}
-		}
-		AssignPeasantTaskList (3, metalThreashold, builtMiningPlatforms);
-
-
 		// Update all NPC tasks
 		for (int i = 0; i < npcScripts.Count; i++) {
 			npcScripts[i].FindTask();
 		}
 
-
-		/// alternate algorithm.... to permanently assign peasants to tasks
-		// for each peasant
-		// if no food -> assign to farming(... maybe wait at farm until its built?)
-		// if no wood -> assign to forrest
-		// if no stone -> assign to quarry
-		// if farm, house built then assign 1 peasant to mining (cap mining at max number of peasants)
-
-		// maybe just turn off calling SetTaskList, after each resource dropoff, at least for peasants, builders should probably still update
-
-	}
-
-	void AssignPeasantTaskList (int resourceIndex, int threashold, List<Platform> platforms)
-	{
-		if (availableResources [resourceIndex] < threashold) {
-			if (platforms.Count > 0) {
-				int[] platformPopulation = new int[platforms.Count];
-				for (int i = 0; i < platforms.Count; i++) {
-					if (platformPeasant.ContainsKey (platforms [i])) {
-						platformPopulation [i] = platformPeasant [platforms [i]];
-					} else {
-						platformPopulation [i] = 0;
-					}
-				}
-				int minPopulation = Mathf.Min (platformPopulation);
-				int platformIndex = System.Array.IndexOf (platformPopulation, minPopulation);
-				peasantTasks.Add (platforms [platformIndex]);
-
-				if (resourceIndex == 0 || resourceIndex == 3) {
-					if (minPopulation >= maxPopulationPerPlatform) {
-						if (resourceIndex == 0) {
-							Debug.Log ("Build more farms");
-							if (!builderTasks.Contains(farmingPlatformsUnderConstruction[0])){
-								builderTasks.Add(farmingPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
-							}
-						} else if (resourceIndex == 3) {
-							Debug.Log ("Build more mines");
-							if (!builderTasks.Contains(miningPlatformsUnderConstruction[0])){
-								builderTasks.Add(miningPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
-							}
-						}
-					}
-				}
-
-			} else {
-				if (resourceIndex == 0 || resourceIndex == 3) {
-					if (resourceIndex == 0) {
-						Debug.Log ("Build first farm");
-						if (!builderTasks.Contains(farmingPlatformsUnderConstruction[0])){
-							builderTasks.Add(farmingPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
-						}
-					} else if (resourceIndex == 3) {
-						Debug.Log ("Build first mine");
-						if (!builderTasks.Contains(miningPlatformsUnderConstruction[0])){
-							builderTasks.Add(miningPlatformsUnderConstruction[0]);// add the first farming platform that still needs to be constructed
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	// Update is called once per frame
@@ -303,8 +215,6 @@ public class King : MonoBehaviour {
 		if (currentTime >= cycleTime) {
 			currentTime = 0.0f;
 			days++;
-//			Debug.Log("New day..... " + days);
-//			DecideAction();
 		}
 	}
 
@@ -320,19 +230,35 @@ public class King : MonoBehaviour {
 		for (int i = 0; i < npcScripts.Count; i++) {
 			if (npcScripts [i].occupation == 0) {
 				peasants.Add(npcScripts[i]);
-			}else if (npcScripts [i].occupation == 1){
+			}else if (npcScripts [i].occupation == 3){
 				builders.Add(npcScripts[i]);
 			}
-			else if (npcScripts [i].occupation == 2){
+			else if (npcScripts [i].occupation == 4){
 				archers.Add(npcScripts[i]);
 			}
 		}
-		SetTaskList ();
+		SetNPCTasks ();
+	}
+
+	// Defense & ARCHERS
+	public void AlertArchers (Collider2D enemyCollider)
+	{
+		enemySighted = true;
+		enemyTransform = enemyCollider.transform;
+		for (int i = 0; i < archers.Count; i++) {
+			archers[i].Patrol();
+		}
 	}
 
 	// INFORM BUILDER THAT RESOURCE HAS ARRIVED --- used in NPC.cs
-	public void CheckResourceArrived(){
-		StartCoroutine(AllowBuildersToTakeResource());
+	public void CheckResourceArrived ()
+	{
+		// only run this again after the second is up... otherwise it might get out of control
+		if (!checkingResourceArrived) {
+//			Debug.Log ("Check resource arrived");
+			checkingResourceArrived = true;
+			StartCoroutine (AllowBuildersToTakeResource ());
+		}
 	}
 	IEnumerator AllowBuildersToTakeResource ()
 	{
@@ -340,367 +266,23 @@ public class King : MonoBehaviour {
 		if (resourceQueue.Count > 0) {
 			resourceQueue [0].GetResource ();
 		}
+		checkingResourceArrived = false;
 	}
 
 
-	void SendNPCToPlatform(NPC npc, Transform platform, Platform platformScript){
-		npc.GoToPlatform(platform, platformScript);
-	}
-	void AssignBuilderTask (NPC npc, Transform platform, Platform platformScript)
+
+
+	// NPC Notifications
+	public void NotifyWaitingPeasants ()
 	{
-		npc.SendBuilderToDocks(platform, platformScript);
-	}
-
-
-	// Determining the goals for the day
-	void DecideAction ()
-	{
-
-		// NPCs
-		int[] population = new int[4];
-		population [0] = 1;//king
-		population [1] = peasants.Count;
-		population [2] = builders.Count;
-		population [3] = archers.Count;
-
-		int populationSum = SumIntArray (population);
-
-		// STRUCTURES
-		int[] structureCount = new int[11];
-		structureCount [0] = farms;
-		structureCount [1] = workshops;
-		structureCount [2] = quarries;
-		structureCount [3] = forrests;
-		structureCount [4] = houses;
-		structureCount [5] = keeps;
-		structureCount [6] = castles;
-		structureCount [7] = archeryRange;
-		structureCount [8] = archeryLookout;
-		structureCount [9] = archeryTower;
-		structureCount [10] = boats;
-
-		int structureSum = SumIntArray (structureCount);
-
-		// RESOURCES
-//		int[] resourceCount = new int[4];
-//		resourceCount [0] = food;
-//		resourceCount [1] = wood;
-//		resourceCount [2] = stone;
-//		resourceCount [3] = metal;
-
-		int resourceSum = SumIntArray (availableResources);
-
-
-
-		// BASIC ALGORITHM
-		// --------------------------
-		// population is low --> build more houses
-		// population is above a certain threashhold --> build a castle
-		// population is above a higher threashhold --> build archery range
-		// we're being attacked --> build archery range
-		// archery population is above a certain threashhold --> build boats
-
-
-		// some ideas
-		/// maybe if there are a lot of resources and no construction happening then either build somehting or increase army...
-
-		// Initial actions
-		// #1 increase population
-		if (populationSum < minPopulation) {
-			Debug.Log ("Build a house");
-			BuildHouse ();
-		} else if (populationSum >= minPopulation) {
-			BuildCastle ();
-		} else if (populationSum >= minMilitaryPopulation) {
-			BuildDefense ();
-		} else if (population [3] >= minArchersForBoat) {
-			BuildBoat ();
-		}
-
-
-		// Maintain any existing building projects
-		if (platformsUnderConstruction.Count > 0) {
-			for (int i = 0; i < platformsUnderConstruction.Count; i++) {
-				if (platformsUnderConstruction [i].housing) 
-				{
-					BuildHouse();
-				}
-				else if (platformsUnderConstruction [i].farming)
-				{
-					BuildFarm();
+		if (builtFarmingPlatforms.Count > 0) {
+			for (int i = 0; i < npcScripts.Count; i++) {
+				if (npcScripts [i].waitingForFarmingPlatform) {
+					npcScripts [i].FindTask();
 				}
 			}
-		}
-
+		}	
 	}
-
-	// HIGH LEVEL DIRECTIVES
-	// ------------------------
-	void BuildHouse ()
-	{
-		// check resource levels
-
-		// - enough -> send builder to start building
-		// 			- check for available builders
-		// 			- available builder --> send to build
-		// 			- no available builders --> if workshop then check for available peasants, if available peasants, then send for training to become builders
-
-		// - not enough -> send peasant to gather resources
-
-
-
-		// is there already a house under construction?? if not then assign the first housing platform in the list
-		Platform houseUnderConstruction = null;
-		for (int i = 0; i < platformsUnderConstruction.Count; i++) {
-			if (housingPlatforms.Contains (platformsUnderConstruction [i])) {
-				Debug.Log ("A house is already under construction");
-				houseUnderConstruction = platformsUnderConstruction [i];
-			}
-		}
-
-		if (houseUnderConstruction == null) {
-			houseUnderConstruction = housingPlatforms[0];
-		}
-
-		bool haveResources = false;
-		for (int i = 0; i < availableResources.Length; i++) {
-			if (availableResources [i] > 0 && houseUnderConstruction.cost [i] > 0) {
-				haveResources = true;// have at least some of the necessary resource to build a house
-			}
-		}
-
-		// yes we have resources to build a house, so assign builder to build a house
-		if (haveResources) 
-		{
-			AssignBuildHouse ();
-		} 
-		// no resources to build a house so remedy this
-		else {
-			// if wood or stone is required then can directly send a peasant to gather resource
-			// if food or metal is required then need to build either a mine or a farm
-			bool gatherWood = false;
-			bool gatherStone = false;
-			bool buildFarm = false;
-			bool buildMine = false;
-
-			for (int i = 0; i < houseUnderConstruction.cost.Length; i++) {
-				if (houseUnderConstruction.cost [i] > 0 && availableResources [i] <= 0) {
-					Debug.Log ("We need" + houseUnderConstruction.cost [i] + " of resource index: " + i);
-					if (i == 0) {
-						buildFarm = true;
-					} else if (i == 1) {
-						gatherWood = true;
-					} else if (i == 2) {
-						gatherStone = true;
-					} else if (i == 3) {
-						buildMine = true;
-					}
-				}
-			}
-			if (gatherWood) {
-				AssignLogging ();
-			}
-			;
-			if (gatherStone) {
-				AssignQuarrying ();
-			}
-			;
-			if (buildFarm) {
-				AssignBuildFarm ();
-			}
-			;
-			if (buildMine) {
-				AssignBuildMine();
-			}
-		}
-	}
-
-	void BuildFarm ()
-	{
-		Platform farmUnderConstruction = null;
-		for (int i = 0; i < platformsUnderConstruction.Count; i++) {
-			if (farmingPlatforms.Contains (platformsUnderConstruction [i])) {
-				Debug.Log ("A farm is already under construction");
-				farmUnderConstruction = platformsUnderConstruction [i];
-			}
-		}
-
-		if (farmUnderConstruction == null) {
-			farmUnderConstruction = farmingPlatforms[0];
-		}
-
-		bool haveResources = false;
-		for (int i = 0; i < availableResources.Length; i++) {
-			if (availableResources [i] > 0 && farmUnderConstruction.cost [i] > 0) {
-				haveResources = true;// have at least some of the necessary resource to build a house
-			}
-		}
-
-		// yes we have resources to build a house, so assign builder to build a house
-		if (haveResources) 
-		{
-			AssignBuildFarm ();
-		} 
-		// no resources to build a farm so remedy this
-		else {
-			// if wood or stone is required then can directly send a peasant to gather resource
-			// if food or metal is required then need to build either a mine or a farm
-			bool gatherWood = false;
-			bool gatherStone = false;
-			bool buildFarm = false;
-			bool buildMine = false;
-
-			for (int i = 0; i < farmUnderConstruction.cost.Length; i++) {
-				if (farmUnderConstruction.cost [i] > 0 && availableResources [i] <= 0) {
-					Debug.Log ("We need" + farmUnderConstruction.cost [i] + " of resource index: " + i);
-					if (i == 0) {
-						buildFarm = true;
-					} else if (i == 1) {
-						gatherWood = true;
-					} else if (i == 2) {
-						gatherStone = true;
-					} else if (i == 3) {
-						buildMine = true;
-					}
-				}
-			}
-			if (gatherWood) {
-				AssignLogging ();
-			}
-			;
-			if (gatherStone) {
-				AssignQuarrying ();
-			}
-			;
-			if (buildFarm) {
-				AssignBuildFarm ();
-			}
-			;
-			if (buildMine) {
-				AssignBuildMine();
-			}
-		}
-	}
-
-	void BuildCastle(){
-		Debug.Log("Build a castle");
-	}
-	void BuildDefense(){
-		
-	}
-	void BuildBoat(){
-		
-	}
-
-	public void FeedHouse (Platform platformToFeed)
-	{
-
-		// if no food then produce more food
-		if (availableResources [0] <= 0) {
-			if (farms <= 0) {
-				// build a farm
-				BuildFarm ();
-			} else if (farms > 0 && farmingPlatforms.Count > farms) {
-				// build more farms
-				Debug.Log("Build more farms");
-				BuildFarm ();
-				Debug.Log("- - - - - - - - - - assign more farmers");
-				AssignFarming();
-			}
-		} else {
-			AssignBuildPeasant(platformToFeed);// builders take food to houses to make more peasants
-		}
-
-	}
-
-
-	// NPC LEVEL TASKS
-	// ------------------------
-
-	// ASSIGN TASKS
-	void AssignFarming ()
-	{
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 0) {
-				SendNPCToPlatform(npcScripts [i], farmingPlatforms[0].transform, farmingPlatforms[0]);
-			}
-		}
-	}
-	// as each platform is exhausted it mreoves itself form the KingScript's list...
-	void AssignLogging ()
-	{
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 0) {
-				SendNPCToPlatform(npcScripts [i], loggingPlatforms[0].transform, loggingPlatforms[0]);
-			}
-		}
-	}
-	void AssignQuarrying ()
-	{
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 0) {
-				SendNPCToPlatform(npcScripts [i], quarryPlatforms[0].transform, quarryPlatforms[0]);
-			}
-		}
-	}
-
-	// builders all go to the docks first and then carry out their task
-	void AssignBuildFarm(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], farmingPlatforms[0].transform, farmingPlatforms[0]);
-			}
-		}
-	}
-	void AssignBuildHouse(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], housingPlatforms[0].transform, housingPlatforms[0]);
-			}
-		}
-	}
-	void AssignBuildWorkshop(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], workshopPlatforms[0].transform, workshopPlatforms[0]);
-			}
-		}
-	}
-	void AssignBuildMine(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], minePlatforms[0].transform, minePlatforms[0]);
-			}
-		}
-	}
-	void AssignBuildArcheryRange(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], archeryPlatforms[0].transform, archeryPlatforms[0]);
-			}
-		}
-	}
-	void AssignBuildBoat(){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], docks.transform, docks);
-			}
-		}
-	}
-
-	// builder takes food to house to create a peasant
-	void AssignBuildPeasant(Platform platformToFeed){
-		for (int i = 0; i < npcScripts.Count; i++) {
-			if (!npcScripts [i].active && npcScripts [i].occupation == 1) {
-				AssignBuilderTask(npcScripts [i], platformToFeed.transform, platformToFeed);
-			}
-		}
-	}
-
-
-
-
-	// REVISED TODO-LISTING
 
 
 
@@ -713,6 +295,39 @@ public class King : MonoBehaviour {
 	         sum += item;
 	     }
 	     return sum;
+	 }
+
+	 public Platform FindPlatformWithLowestPopulation(List<Platform> platforms, Dictionary<Platform, int> populationDict){
+		int[] popPerPlatform = new int[platforms.Count];
+		for (int i = 0; i < platforms.Count; i++) {
+			if (populationDict.ContainsKey (platforms [i])) {
+				popPerPlatform [i] = populationDict [platforms [i]];
+			} else {
+				popPerPlatform [i] = 0;
+			}
+		}
+
+		int lowestPlatformPopulation = Mathf.Min(popPerPlatform);
+		int targetPlatformIndex = System.Array.IndexOf(popPerPlatform, lowestPlatformPopulation);
+		Platform targetPlatform = platforms[targetPlatformIndex];
+
+		return targetPlatform;
+
+	 }
+
+	 public void AddNPCToPopulation (Platform key, Dictionary<Platform, int> dict)
+	{
+		if (dict.ContainsKey (key)) {
+			dict[key]++;
+		}else{
+			dict.Add(key, 1);
+		}
+	 }
+	public void RemoveNPCFromPopulation (Platform key, Dictionary<Platform, int> dict)
+	{
+		if (dict.ContainsKey (key)) {
+			dict[key]--;
+		}
 	 }
 
 

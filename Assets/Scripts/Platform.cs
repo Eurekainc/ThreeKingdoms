@@ -42,28 +42,28 @@ public class Platform : MonoBehaviour {
 			}
 		}
 
+		// completed builds on platforms
 		if (housing) {
-			Debug.Log("House completed");
 			House houseScript = GetComponent<House>();
 			houseScript.Activate();
 			kingScript.housingPlatformsUnderConstruction.Remove(this);
 			kingScript.builtHousingPlatforms.Add(this);
 		}else if (farming){
-			Debug.Log("Farm completed");
 			Farm farmScript = GetComponent<Farm>();
 			farmScript.Activate();
 			kingScript.farmingPlatformsUnderConstruction.Remove(this);
 			kingScript.builtFarmingPlatforms.Add(this);
 		}else if (workshop){
-			Debug.Log("Workshop completed");
+			Workshop workshopScript = GetComponent<Workshop>();
+			workshopScript.Activate();
 			kingScript.workshopPlatformsUnderConstruction.Remove(this);
 			kingScript.builtWorkshopPlatforms.Add(this);
 		}else if (mine){
-			Debug.Log("Mine completed");
 			kingScript.miningPlatformsUnderConstruction.Remove(this);
 			kingScript.builtMiningPlatforms.Add(this);
 		}else if (archery){
-			Debug.Log("Archery range completed");
+			Archery archeryScript = GetComponent<Archery>();
+			archeryScript.Activate();
 			kingScript.archeryPlatformsUnderConstruction.Remove(this);
 			kingScript.builtArcheryPlatforms.Add(this);
 		}

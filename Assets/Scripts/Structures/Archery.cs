@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Workshop : MonoBehaviour {
+public class Archery : MonoBehaviour {
 
 	public King kingScript;
 
 	public Platform platformScript;
 
-	public int buildersToSpawn = 1;
+	public int archersToSpawn = 3;
 	public GameObject npcPrefab;
 
 	// Use this for initialization
@@ -29,7 +29,7 @@ public class Workshop : MonoBehaviour {
 				platformScript.cost[3] = 0;
 
 				// simplification once a house is built it just spawns peasants
-				CreateBuilders ();
+				CreateArchers ();
 
 				break;
 			default:
@@ -38,18 +38,18 @@ public class Workshop : MonoBehaviour {
 		}
 	}
 
-	public void CreateBuilders ()
+	public void CreateArchers ()
 	{
-		for (int i = 0; i < buildersToSpawn; i++) {
-			GameObject peasant = (GameObject)Instantiate (npcPrefab, transform.position, Quaternion.identity);
-			kingScript.npcs.Add (peasant);
-			NPC peasantScript = peasant.GetComponent<NPC> ();
-			peasantScript.kingScript = kingScript;
-			peasantScript.occupation = 3;// 0 = woodcutter, 1 = quarryman, 2 = farmer, 3 = builder
-			kingScript.npcScripts.Add (peasantScript);
+		for (int i = 0; i < archersToSpawn; i++) {
+			GameObject newNPC = (GameObject)Instantiate (npcPrefab, transform.position, Quaternion.identity);
+			kingScript.npcs.Add (newNPC);
+			NPC newNPCScript = newNPC.GetComponent<NPC> ();
+			newNPCScript.kingScript = kingScript;
+			newNPCScript.occupation = 4;// 0 = woodcutter, 1 = quarryman, 2 = farmer, 3 = builder, 4 = archer, 5 = King
+			kingScript.npcScripts.Add (newNPCScript);
 		}
 		StartCoroutine(RecruitPeasantsInSystem());// put this in a coroutine to give the peasants a chance to run Awake() and Start(), before being accessed by the Kingscript
-		buildersToSpawn = 0;
+		archersToSpawn = 0;
 	}
 
 	IEnumerator RecruitPeasantsInSystem(){

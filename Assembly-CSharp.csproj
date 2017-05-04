@@ -51,6 +51,8 @@
      <Compile Include="Assets\Scripts\NPC.cs" />
      <Compile Include="Assets\Scripts\NavMeshSourceTag.cs" />
      <Compile Include="Assets\Scripts\Platform.cs" />
+     <Compile Include="Assets\Scripts\Projectile.cs" />
+     <Compile Include="Assets\Scripts\Structures\Archery.cs" />
      <Compile Include="Assets\Scripts\Structures\Castle.cs" />
      <Compile Include="Assets\Scripts\Structures\Farm.cs" />
      <Compile Include="Assets\Scripts\Structures\Forrest.cs" />

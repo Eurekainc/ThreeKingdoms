@@ -11,23 +11,9 @@ public class House : MonoBehaviour {
 	public int peasantsToSpawn = 3;
 	public GameObject peasantPrefab;
 
-	public float timeToRequestFood = 20.0f;
-	private float elapsedTime = 0.0f;
-
 	// Use this for initialization
 	void Start () {
 		platformScript = GetComponent<Platform>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-//		if (peasantsToSpawn > 0 && platformScript.level > 0) {
-//			elapsedTime += Time.deltaTime;
-//			if (elapsedTime >= timeToRequestFood) {
-//				RequestFood();
-//			}
-//		}
 	}
 
 	public void Activate ()
@@ -75,6 +61,7 @@ public class House : MonoBehaviour {
 			kingScript.npcs.Add (peasant);
 			NPC peasantScript = peasant.GetComponent<NPC> ();
 			peasantScript.kingScript = kingScript;
+			peasantScript.occupation = i;// 0 = woodcutter, 1 = quarryman, 2 = farmer
 			kingScript.npcScripts.Add (peasantScript);
 //			peasantScript.Init();
 		}

@@ -9,47 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1952365844393982}
+  m_RootGameObject: {fileID: 1198836372919214}
   m_IsPrefabParent: 1
---- !u!1 &1952365844393982
+--- !u!1 &1198836372919214
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4244692365732682}
-  - component: {fileID: 33692049309640666}
-  - component: {fileID: 23471738045526464}
-  - component: {fileID: 195152809959723686}
-  - component: {fileID: 114365648937363856}
-  - component: {fileID: 58470565914007394}
+  - component: {fileID: 4510060754496436}
+  - component: {fileID: 33937153877910878}
+  - component: {fileID: 23724641876054784}
+  - component: {fileID: 195011791652709306}
+  - component: {fileID: 114302640655870928}
+  - component: {fileID: 58578496832004306}
   m_Layer: 0
-  m_Name: Peasant
+  m_Name: Builder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4244692365732682
+--- !u!4 &4510060754496436
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.88, y: -10.634264, z: 1.46875}
+  m_LocalPosition: {x: 14.872021, y: -10.634264, z: 0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23471738045526464
+--- !u!23 &23724641876054784
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 546623f0d60ac457ba6cb2485b8fede5, type: 2}
+  - {fileID: 2100000, guid: 7a16210b646934874972b73ef70c9417, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,19 +76,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33692049309640666
+--- !u!33 &33937153877910878
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!58 &58470565914007394
+--- !u!58 &58578496832004306
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -98,12 +98,12 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
---- !u!114 &114365648937363856
+--- !u!114 &114302640655870928
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd1481c792bb44915af66d7ba58e643d, type: 3}
@@ -112,7 +112,7 @@ MonoBehaviour:
   kingScript: {fileID: 0}
   active: 0
   timeToDegrade: 50
-  occupation: 0
+  occupation: 3
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}
   movingToPlatform: 0
@@ -124,16 +124,16 @@ MonoBehaviour:
     m_Bits: 0
   attackPositionDelay: 1
   reloadTime: 1
---- !u!195 &195152809959723686
+--- !u!195 &195011791652709306
 NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952365844393982}
+  m_GameObject: {fileID: 1198836372919214}
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
