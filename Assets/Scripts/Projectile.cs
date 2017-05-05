@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
 	public Vector3 endPoint;
 	public bool shoot = false;
 	private float elapsedTime = 0.0f;
+	public GameObject arrowModel;
 
 	// Use this for initialization
 	void Start () {
@@ -20,8 +21,25 @@ public class Projectile : MonoBehaviour {
 
 		if (shoot) {
 			if (elapsedTime >= 1) {
-				Destroy(gameObject);
+				Destroy (gameObject);
 			}
+
+			// arrow angle
+			float arrowDirection = Mathf.Sign (endPoint.x - startPoint.x);
+//			if (elapsedTime > 0 && elapsedTime < 0.25) {
+//				arrowModel.transform.rotation = Quaternion.Euler (0, 0, 45 * arrowDirection);
+//			} else if (elapsedTime > 0.25 && elapsedTime < 0.4) {
+//				arrowModel.transform.rotation = Quaternion.Euler (0, 0, 30 * arrowDirection);
+//			} else if (elapsedTime > 0.4 && elapsedTime < 0.6) {
+//				arrowModel.transform.rotation = Quaternion.Euler (0, 0, 0);
+//			}else if (elapsedTime > 0.6 && elapsedTime < 0.75){
+//				arrowModel.transform.rotation = Quaternion.Euler(0, 0, -30 * arrowDirection);
+//			}else if (elapsedTime > 0.75){
+//				arrowModel.transform.rotation = Quaternion.Euler(0, 0, -45 * arrowDirection);
+//			}
+
+			arrowModel.transform.rotation = Quaternion.Slerp(Quaternion.Euler (0, 0, 45 * arrowDirection), Quaternion.Euler (0, 0, -45 * arrowDirection), elapsedTime);
+
 			transform.position = CalculateBezierPoint (elapsedTime, startPoint, new Vector3 (startPoint.x, startPoint.y + 30, startPoint.z), endPoint);
 			elapsedTime += Time.deltaTime;
 		}

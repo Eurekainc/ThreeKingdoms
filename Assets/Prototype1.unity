@@ -225,6 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 21309153}
   - component: {fileID: 21309154}
+  - component: {fileID: 21309155}
   m_Layer: 8
   m_Name: ENEMY
   m_TagString: Untagged
@@ -239,7 +240,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 21309152}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5, y: -5, z: 0.375}
+  m_LocalPosition: {x: 42.6, y: 36.2, z: 0.375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -254,12 +255,32 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 5
+--- !u!50 &21309155
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 21309152}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!4 &22075211 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 76042c90dc5f54961ab9b15c1da8e9e4, type: 3}
@@ -712,6 +733,11 @@ Prefab:
       propertyPath: enemyLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 114592177570269482, guid: 9cf38f5c8ecdd42e7b982d6107246ed0,
+        type: 2}
+      propertyPath: kingScript
+      value: 
+      objectReference: {fileID: 1471069629}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9cf38f5c8ecdd42e7b982d6107246ed0, type: 2}
   m_IsPrefabParent: 0
