@@ -16,7 +16,6 @@ public class Enemy : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col)
 	{
-		Debug.Log("TRIGGER enter ENEMY");
 		if (col.CompareTag("Arrow")){
 			Debug.Log("I've been hit!!!!!");
 		}

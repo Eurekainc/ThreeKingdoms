@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 4044496985801244}
   - component: {fileID: 114514547555816500}
   - component: {fileID: 61716768553118540}
-  - component: {fileID: 50132524164306390}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Arrow
@@ -69,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1642310130756644}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2750007, y: 1, z: 2.175}
   m_Children: []
   m_Father: {fileID: 4044496985801244}
   m_RootOrder: 0
@@ -87,7 +86,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7b8285e7b5cb74a358aa7e2d445d7c52, type: 2}
+  - {fileID: 2100000, guid: c8906fd992e624810a60d0546259044c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,26 +112,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1642310130756644}
   m_Mesh: {fileID: 4300000, guid: 09e3a914aa4364b12882dcb337f1a93b, type: 3}
---- !u!50 &50132524164306390
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1949672778497248}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &61716768553118540
 BoxCollider2D:
   m_ObjectHideFlags: 1
