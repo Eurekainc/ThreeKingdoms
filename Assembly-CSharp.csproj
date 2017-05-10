@@ -46,30 +46,66 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Ikari\Vertex Painter\Examples\Assets\Scripts\Reflection.cs" />
+     <Compile Include="Assets\Ikari\Vertex Painter\Scripts\Normal\IVPClasses.cs" />
+     <Compile Include="Assets\Ikari\Vertex Painter\Scripts\Normal\IVPData.cs" />
+     <Compile Include="Assets\Ikari\Vertex Painter\Scripts\Normal\IVPEnums.cs" />
+     <Compile Include="Assets\Ikari\Vertex Painter\Scripts\Normal\IVPObjectData.cs" />
      <Compile Include="Assets\Scripts\Boat.cs" />
+     <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\King.cs" />
      <Compile Include="Assets\Scripts\LocalNavMeshBuilder.cs" />
      <Compile Include="Assets\Scripts\NPC.cs" />
      <Compile Include="Assets\Scripts\NavMeshSourceTag.cs" />
      <Compile Include="Assets\Scripts\Platform.cs" />
+     <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scripts\Structures\Archery.cs" />
      <Compile Include="Assets\Scripts\Structures\Castle.cs" />
+     <Compile Include="Assets\Scripts\Structures\Docks.cs" />
      <Compile Include="Assets\Scripts\Structures\Farm.cs" />
      <Compile Include="Assets\Scripts\Structures\Forrest.cs" />
      <Compile Include="Assets\Scripts\Structures\House.cs" />
      <Compile Include="Assets\Scripts\Structures\Mine.cs" />
      <Compile Include="Assets\Scripts\Structures\Quarry.cs" />
      <Compile Include="Assets\Scripts\Structures\Workshop.cs" />
+     <Compile Include="Assets\Scripts\Utility\ResourceMarker.cs" />
      <Compile Include="Assets\Scripts\Water\Clickspawn.cs" />
      <Compile Include="Assets\Scripts\Water\Water.cs" />
      <Compile Include="Assets\Scripts\Water\WaterDetector.cs" />
      <Compile Include="Assets\Scripts\Water\WaterForce.cs" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Color\Vertex Color Color Blend Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Advanced Blend\Vertex Color RGB Advanced Blend Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Normal Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Scripts\Editor\InternalResources\Shaders\Debug\Vertex Colors.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Blend Normal.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\Fake AO\Vertex Color Fake AO Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGBA Blend\Vertex Color RGBA Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Unlit\Planar Blend\Vertex Color Planar Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGBA Blend\Vertex Color RGBA Blend Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Ikari Vertex Painter Changelog.txt" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp Normal.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Blend Specular.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Others\Text Unlit.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Advanced\Vertex Water Blend.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp Specular.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Specular Mobile.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Mobile.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Color\Vertex Color Color Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Specular Mobile.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Unlit\RGB Blend\Vertex Color RGB Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Hard.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Advanced Blend\Vertex Color RGB Advanced Blend.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\Fake AO\Vertex Color Fake AO.shader" />
+     <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Normal Mobile.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

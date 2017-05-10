@@ -282,9 +282,35 @@ public class NPC : MonoBehaviour {
 		agent.SetDestination (destinationPlatformScript.transform.position);
 		movingToPlatform = true;
 	}
-	void GoToDocksPeasant()
+	void GoToDocksPeasant (int resourceIndex)
 	{
-		agent.SetDestination (kingScript.docks.transform.position);
+		Debug.Log ("resourceIndex: " + resourceIndex);
+		if (resourceIndex == 0) {
+			Debug.Log("Go to food store");
+			agent.SetDestination (kingScript.foodResourceStore.position);
+//			agent.SetDestination (kingScript.docks.transform.position);
+		}else if (resourceIndex == 1) {
+			Debug.Log("Go to wood store");
+			agent.SetDestination (kingScript.woodResourceStore.position);
+//			agent.SetDestination (kingScript.docks.transform.position);
+		}else if (resourceIndex == 2) {
+			Debug.Log("Go to stone store");
+			agent.SetDestination (kingScript.stoneResourceStore.position);
+//			agent.SetDestination (kingScript.docks.transform.position);
+		}else {
+			agent.SetDestination (kingScript.docks.transform.position);
+		} 
+//		if (storeIndex == 0) {
+//			agent.SetDestination (kingScript.foodResourceStore.position);
+//		} else if (storeIndex == 1) {
+//			agent.SetDestination (kingScript.woodResourceStore.position);
+//		} else if (storeIndex == 2) {
+//			agent.SetDestination (kingScript.stoneResourceStore.position);
+//		} else {
+//			agent.SetDestination (kingScript.docks.transform.position);
+//		}
+//		agent.SetDestination (kingScript.docks.transform.position);
+//		agent.SetDestination (kingScript.foodResourceStore.position);
 		movingToPlatform = true;
 	}
 
@@ -409,31 +435,42 @@ public class NPC : MonoBehaviour {
 		yield return new WaitForSeconds(kingScript.farmTime);
 		carriedResourceIndex = 0;
 		carryingResource = true;
-		GoToDocksPeasant();
+		GoToDocksPeasant(carriedResourceIndex);
 	}
 	IEnumerator GatherWood(){
 		yield return new WaitForSeconds(kingScript.loggingTime);
 		carriedResourceIndex = 1;
 		carryingResource = true;
-		GoToDocksPeasant();
+		GoToDocksPeasant(carriedResourceIndex);
 	}
 	IEnumerator GatherStone(){
 		yield return new WaitForSeconds(kingScript.quarryingTime);
 		carriedResourceIndex = 2;
 		carryingResource = true;
-		GoToDocksPeasant();
+		GoToDocksPeasant(carriedResourceIndex);
 	}
 	IEnumerator Mining(){
 		yield return new WaitForSeconds(kingScript.miningTime);
 		carriedResourceIndex = 3;
 		carryingResource = true;
-		GoToDocksPeasant();
+		GoToDocksPeasant(carriedResourceIndex);
 	}
 
-	IEnumerator OffloadAtDocks(){
-		yield return new WaitForSeconds(kingScript.offloadTime);
-		kingScript.availableResources[carriedResourceIndex]++;
+	IEnumerator OffloadAtDocks ()
+	{
+		yield return new WaitForSeconds (kingScript.offloadTime);
+
+		kingScript.availableResources [carriedResourceIndex]++;
 		carryingResource = false;
+
+		// instantiating resource object
+//		if (carriedResourceIndex == 0) {
+//			GameObject foodResource = (GameObject)Instantiate(kingScript.foodResourcePrefab, kingScript.foodResourceStore.position, Quaternion.identity);
+//		}else if (carriedResourceIndex == 1){
+//			GameObject woodResource = (GameObject)Instantiate(kingScript.woodResourcePrefab, kingScript.woodResourceStore.position, Quaternion.identity);
+//		}else if (carriedResourceIndex == 2){
+//			GameObject stoneResource = (GameObject)Instantiate(kingScript.stoneResourcePrefab, kingScript.stoneResourceStore.position, Quaternion.identity);
+//		}
 
 		kingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
 		GoToWorkPlatformPeasant();

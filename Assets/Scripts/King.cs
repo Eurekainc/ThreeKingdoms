@@ -117,6 +117,16 @@ public class King : MonoBehaviour {
 	private bool checkingResourceArrived = false;
 	public List<NPC> resourceQueue = new List<NPC>();
 
+	// resource stores
+	public Transform foodResourceStore;
+	public Transform woodResourceStore;
+	public Transform stoneResourceStore;
+
+	public GameObject foodResourcePrefab;
+	public GameObject woodResourcePrefab;
+	public GameObject stoneResourcePrefab;
+
+
 	// structures
 	public int farms = 0;
 	public int quarries = 0;
