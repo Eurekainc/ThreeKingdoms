@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 195078418088270570}
   - component: {fileID: 114592177570269482}
   - component: {fileID: 58029317695191866}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,6 +116,9 @@ MonoBehaviour:
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}
   movingToPlatform: 0
+  goingToFerry: 0
+  waitingForFerry: 0
+  ferryWaitTime: 2
   carryingResource: 0
   carriedResourceIndex: 0
   projectilePrefab: {fileID: 1949672778497248, guid: 6439af278d512418284c3292307af9b1,

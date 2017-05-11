@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Docks : MonoBehaviour {
 
+	public King kingScript = null;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -15,10 +17,21 @@ public class Docks : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D (Collider2D col)
-	{
-		if (col.CompareTag ("Player")) {
-			Debug.Log("Player entered docks....");
-		}
-	}
+//	void OnTriggerEnter2D (Collider2D col)
+//	{
+//		if (col.CompareTag ("Player")) {
+//			Player playerScript = col.gameObject.GetComponent<Player>();
+//			playerScript.atDocks = true;
+//			playerScript.currentKingScript = kingScript;
+//		}
+//	}
+//
+//	void OnTriggerExit2D (Collider2D col)
+//	{
+//		if (col.CompareTag ("Player")) {
+//			Player playerScript = col.gameObject.GetComponent<Player>();
+//			playerScript.atDocks = false;
+//			playerScript.currentKingScript = null;
+//		}
+//	}
 }

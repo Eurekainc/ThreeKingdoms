@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 195011791652709306}
   - component: {fileID: 114302640655870928}
   - component: {fileID: 58578496832004306}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Builder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,6 +116,9 @@ MonoBehaviour:
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}
   movingToPlatform: 0
+  goingToFerry: 0
+  waitingForFerry: 0
+  ferryWaitTime: 2
   carryingResource: 0
   carriedResourceIndex: 0
   projectilePrefab: {fileID: 0}

@@ -126,6 +126,9 @@ public class King : MonoBehaviour {
 	public GameObject woodResourcePrefab;
 	public GameObject stoneResourcePrefab;
 
+	// ferry pickup point where player picks up NPCs
+	public Transform ferryPickUp;
+	public List<NPC> npcsWaitingForFerry = new List<NPC>();
 
 	// structures
 	public int farms = 0;
@@ -226,6 +229,17 @@ public class King : MonoBehaviour {
 			currentTime = 0.0f;
 			days++;
 		}
+	}
+
+	// called after modifying the king script's NPCs list
+	public void UpdateNPCs ()
+	{
+		for (int i = 0; i < npcs.Count; i++) {
+			npcScripts.Add(npcs[i].GetComponent<NPC>());
+			// TODO: make sure to update the King script when NPCs move between islands
+			npcScripts[i].kingScript = this;// assign the King script to each NPC
+		}
+		UpdatePeasantCount ();
 	}
 
 	void ResetNPCLists(){

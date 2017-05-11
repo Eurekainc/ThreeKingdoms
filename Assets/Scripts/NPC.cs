@@ -31,7 +31,10 @@ public class NPC : MonoBehaviour {
 	public Platform destinationPlatformScript = null;// can be private
 	public bool movingToPlatform = false;
 
-	// Carrying resources
+	// Carrying resources / Ferry
+	public bool goingToFerry = false;
+	public bool waitingForFerry = false;
+	public float ferryWaitTime = 2.0f;
 	public bool carryingResource = false;
 	public int carriedResourceIndex;
 
@@ -300,17 +303,6 @@ public class NPC : MonoBehaviour {
 		}else {
 			agent.SetDestination (kingScript.docks.transform.position);
 		} 
-//		if (storeIndex == 0) {
-//			agent.SetDestination (kingScript.foodResourceStore.position);
-//		} else if (storeIndex == 1) {
-//			agent.SetDestination (kingScript.woodResourceStore.position);
-//		} else if (storeIndex == 2) {
-//			agent.SetDestination (kingScript.stoneResourceStore.position);
-//		} else {
-//			agent.SetDestination (kingScript.docks.transform.position);
-//		}
-//		agent.SetDestination (kingScript.docks.transform.position);
-//		agent.SetDestination (kingScript.foodResourceStore.position);
 		movingToPlatform = true;
 	}
 
@@ -367,65 +359,104 @@ public class NPC : MonoBehaviour {
 	void CheckTask ()
 	{
 
-		if (occupation == 0) {
-			if (carryingResource) { 
-				StartCoroutine (OffloadAtDocks ());
-			} else { 
-				StartCoroutine (GatherWood ());
+		if (goingToFerry) {
+			Debug.Log("Arrived at ferry");
+			kingScript.npcsWaitingForFerry.Add(this);
+			goingToFerry = false;
+			waitingForFerry = true;
+			StartCoroutine(WaitAtFerry());
+		} else {
+
+			if (occupation == 0) {
+				if (carryingResource) { 
+					StartCoroutine (OffloadAtDocks ());
+				} else { 
+					StartCoroutine (GatherWood ());
+				}
+				;
+			} else if (occupation == 1) {
+				if (carryingResource) { 
+					StartCoroutine (OffloadAtDocks ());
+				} else { 
+					StartCoroutine (GatherStone ());
+				}
+				;
+			} else if (occupation == 2) {
+				if (carryingResource) { 
+					StartCoroutine (OffloadAtDocks ());
+				} else { 
+					StartCoroutine (Farm ());
+				}
+				;
 			}
-			;
-		} else if (occupation == 1) {
-			if (carryingResource) { 
-				StartCoroutine (OffloadAtDocks ());
-			} else { 
-				StartCoroutine (GatherStone ());
-			}
-			;
-		} else if (occupation == 2) {
-			if (carryingResource) { 
-				StartCoroutine (OffloadAtDocks ());
-			} else { 
-				StartCoroutine (Farm ());
-			}
-			;
-		}
 
 		// if its a builder (this is called once arriving at docks or build site depending on whether they're carrying a resource
 		else if (occupation == 3) {
-			// if a builder isn't carrying a resource then they will pick up appropriate resource from docks, then go to their build task
+				// if a builder isn't carrying a resource then they will pick up appropriate resource from docks, then go to their build task
 
-			if (!carryingResource) {
+				if (!carryingResource) {
 				
-				// join the queue to get a resource
-				if (!kingScript.resourceQueue.Contains (this)) {
-					kingScript.resourceQueue.Add (this);
-				}
-				kingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
+					// join the queue to get a resource
+					if (!kingScript.resourceQueue.Contains (this)) {
+						kingScript.resourceQueue.Add (this);
+					}
+					kingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
 
-			}
+				}
 			// builder is carrying resource so they're here to build
 			// or possibly they were trying to build another structure which was completed before builder arrived with resource.... in that case return teh resource
 			else {
-				if (destinationPlatformScript.farming) {
-					StartCoroutine (BuildSectionOfStructure ());
-				} else if (destinationPlatformScript.quarry) {
-					StartCoroutine (BuildSectionOfStructure ());
-				} else if (destinationPlatformScript.mine) {
-					StartCoroutine (BuildSectionOfStructure ());
-				} else if (destinationPlatformScript.housing) {
-					StartCoroutine (BuildSectionOfStructure ());
-				} else if (destinationPlatformScript.workshop) {
-					StartCoroutine (BuildSectionOfStructure ());
-				} else if (destinationPlatformScript.archery) {
-					StartCoroutine (BuildSectionOfStructure ());
+					if (destinationPlatformScript.farming) {
+						StartCoroutine (BuildSectionOfStructure ());
+					} else if (destinationPlatformScript.quarry) {
+						StartCoroutine (BuildSectionOfStructure ());
+					} else if (destinationPlatformScript.mine) {
+						StartCoroutine (BuildSectionOfStructure ());
+					} else if (destinationPlatformScript.housing) {
+						StartCoroutine (BuildSectionOfStructure ());
+					} else if (destinationPlatformScript.workshop) {
+						StartCoroutine (BuildSectionOfStructure ());
+					} else if (destinationPlatformScript.archery) {
+						StartCoroutine (BuildSectionOfStructure ());
+					}
 				}
+			} else if (occupation == 4) {
+				Patrol ();// check for enemies in Patrol function
+			} else if (occupation == 5) {
+				// if nobody is attacking, then parade, else... move to castle???
+				Parade ();
 			}
-		} else if (occupation == 4) {
-			Patrol ();// check for enemies in Patrol function
-		}else if (occupation == 5){
-			// if nobody is attacking, then parade, else... move to castle???
-			Parade();
 		}
+	}
+
+	// this tells NPC to go to be picked up by the boat
+	public void GoToFerry ()
+	{
+		Debug.Log("Going to ferry");
+		agent.SetDestination (kingScript.ferryPickUp.position);
+		goingToFerry = true;
+		movingToPlatform = true;
+	}
+
+	IEnumerator WaitAtFerry(){
+		yield return new WaitForSeconds(ferryWaitTime);
+		kingScript.npcsWaitingForFerry.Remove(this);
+		waitingForFerry = false;
+		movingToPlatform = false;
+		CheckTask();
+	}
+
+	public void PickUp(){
+		kingScript.npcs.Remove(gameObject);
+		kingScript.UpdateNPCs ();
+		gameObject.SetActive(false);
+	}
+	public void DropOff(Vector3 newPosition, King newKingScript){
+		agent.Warp(newPosition);
+		kingScript = newKingScript;
+		kingScript.npcs.Add(gameObject);
+		kingScript.UpdateNPCs ();
+
 	}
 
 

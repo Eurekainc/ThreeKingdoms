@@ -24,9 +24,9 @@ GameObject:
   - component: {fileID: 195152809959723686}
   - component: {fileID: 114365648937363856}
   - component: {fileID: 58470565914007394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Peasant
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,6 +116,9 @@ MonoBehaviour:
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}
   movingToPlatform: 0
+  goingToFerry: 0
+  waitingForFerry: 0
+  ferryWaitTime: 2
   carryingResource: 0
   carriedResourceIndex: 0
   projectilePrefab: {fileID: 0}
