@@ -6,10 +6,39 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cube
+    100004: Cube_001
+    100006: Cube_002
+    100008: Chips
+    100010: Mountain
+    100012: Snow
     400000: //RootNode
+    400002: Cube
+    400004: Cube_001
+    400006: Cube_002
+    400008: Chips
+    400010: Mountain
+    400012: Snow
     2300000: //RootNode
+    2300002: Cube
+    2300004: Cube_001
+    2300006: Cube_002
+    2300008: Chips
+    2300010: Mountain
+    2300012: Snow
     3300000: //RootNode
+    3300002: Cube
+    3300004: Cube_001
+    3300006: Cube_002
+    3300008: Chips
+    3300010: Mountain
+    3300012: Snow
     4300000: Cube
+    4300002: Cube_002
+    4300004: Cube_001
+    4300006: Chips
+    4300008: Snow
+    4300010: Mountain
     7400000: Default Take
     9500000: //RootNode
   materials:

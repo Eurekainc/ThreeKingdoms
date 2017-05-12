@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NUnit.Framework;
 
 public class Player : MonoBehaviour {
 
@@ -131,7 +130,8 @@ public class Player : MonoBehaviour {
 				if (npcsInRange.Count > 0) {
 					passengers.Add (npcsInRange[npcsInRange.Count - 1]);
 					npcsInRange[npcsInRange.Count - 1].PickUp ();
-					npcsInRange.RemoveAt(npcsInRange.Count - 1);
+//					npcsInRange.RemoveAt(npcsInRange.Count - 1);
+//					Debug.Log("error??? " + npcsInRange[npcsInRange.Count - 1].movingToPlatform);
 					currentInventory++;
 				}
 
