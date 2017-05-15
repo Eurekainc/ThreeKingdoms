@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Shaders/VertexWindGrass.shader">
     <Files>
-      <File FileName="Assets/Scripts/King.cs" Line="235" Column="27" />
-      <File FileName="Assets/Scripts/Player/Player.cs" Line="132" Column="16" />
-      <File FileName="Assets/Scripts/NPC.cs" Line="457" Column="35" />
+      <File FileName="Assets/Shaders/ToonLit2.shader" Line="1" Column="24" />
+      <File FileName="Assets/Scripts/Player/Player.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/King.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NPC.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Water/Water.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Utility/ResourceMarker.cs" Line="64" Column="36" />
-      <File FileName="Assets/Scripts/Player/Ring.cs" Line="25" Column="24" />
-      <File FileName="Assets/Scripts/Structures/Docks.cs" Line="20" Column="4" />
+      <File FileName="Assets/Scripts/Utility/ResourceMarker.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Player/Ring.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Structures/Docks.cs" Line="1" Column="1" />
+      <File FileName="Assets/Shaders/VertexWindGrass.shader" Line="99" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -107,6 +107,7 @@
      <None Include="Assets\PostProcessing\Editor Resources\UI\CurveBackground.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\Fake AO\Vertex Color Fake AO Mobile.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Mobile.shader" />
+     <None Include="Assets\Shaders\VertexWindGrass.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGBA Blend\Vertex Color RGBA Blend.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Unlit\Planar Blend\Vertex Color Planar Blend.shader" />
@@ -132,10 +133,13 @@
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
      <None Include="Assets\PostProcessing\Resources\Bluenoise64\LICENSE.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\BuiltinDebugViews.shader" />
+     <None Include="Assets\TSF\Shaders\TSFOutline.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Common.cginc" />
      <None Include="Assets\PostProcessing\Resources\Bluenoise64\COPYING.txt" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp Specular.shader" />
+     <None Include="Assets\Shaders\ToonCutoff1.shader" />
      <None Include="Assets\PostProcessing\Editor Resources\UI\Trackball.shader" />
+     <None Include="Assets\TSF\Shaders\TSF.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Specular Mobile.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Mobile.shader" />
@@ -161,6 +165,7 @@
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Advanced Blend\Vertex Color RGB Advanced Blend.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ColorGrading.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.cginc" />
+     <None Include="Assets\Shaders\ToonLit2.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\Fake AO\Vertex Color Fake AO.shader" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Normal Mobile.shader" />

@@ -198,7 +198,9 @@ public class King : MonoBehaviour {
 			npcScripts[i].kingScript = this;// assign the King script to each NPC
 		}
 
+		if (npcScripts.Count > 0){
 		king = npcScripts[0];// assign the first NPC to be the king
+		}
 
 	}
 
