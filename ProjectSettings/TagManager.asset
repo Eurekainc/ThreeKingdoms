@@ -7,6 +7,7 @@ TagManager:
   - Arrow
   - NPC
   - Island
+  - Docks
   layers:
   - Default
   - TransparentFX

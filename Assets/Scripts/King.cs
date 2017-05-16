@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NUnit.Framework;
 
 public class King : MonoBehaviour {
+
+	public GlobalGameScript globalGameScript;
 
 	public float cycleTime = 10.0f;
 	private float currentTime = 0.0f;
@@ -88,14 +91,14 @@ public class King : MonoBehaviour {
 
 
 	// Threashold values for assigning peasant and builder work task lists
-	public int foodThreashold = 5;
-	public int woodThreashold = 10;
-	public int stoneThreashold = 5;
-	public int metalThreashold = 2;
-
-	public int peasantThreashold = 5;
-
-	public int maxPopulationPerPlatform = 5;// if there are more peasants per platform than this then more platforms are built
+//	public int foodThreashold = 5;
+//	public int woodThreashold = 10;
+//	public int stoneThreashold = 5;
+//	public int metalThreashold = 2;
+//
+//	public int peasantThreashold = 5;
+//
+//	public int maxPopulationPerPlatform = 5;// if there are more peasants per platform than this then more platforms are built
 
 
 
@@ -122,8 +125,19 @@ public class King : MonoBehaviour {
 	public Transform stoneResourceStore;
 
 	public GameObject foodResourcePrefab;
+	private Bounds foodResourceBounds;// need the bounds for positioning at the docks
+	public int foodResourceColumns = 3;// The number of columns to stack at the docks
 	public GameObject woodResourcePrefab;
+	private Bounds woodResourceBounds;// need the bounds for positioning at the docks
+	public int woodResourceColumns = 1;// The number of columns to stack at the docks
 	public GameObject stoneResourcePrefab;
+	private Bounds stoneResourceBounds;// need the bounds for positioning at the docks
+	public int stoneResourceColumns = 3;// The number of columns to stack at the docks
+
+	// Resource indicators
+	public GameObject foodIcon;
+	public GameObject woodIcon;
+	public GameObject stoneIcon;
 
 	// ferry pickup point where player picks up NPCs
 	public Transform ferryPickUp;
@@ -143,7 +157,8 @@ public class King : MonoBehaviour {
 	public int boats = 0;
 
 
-	// TRACK CONSTRUCTION
+	// TRACK ALL CONSTRUCTION Platforms
+	// use this to determine how much resource is required per island
 	public List<Platform> platformsUnderConstruction = new List<Platform>();
 
 
@@ -159,6 +174,11 @@ public class King : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
 	{
+
+		if (globalGameScript == null) {
+			globalGameScript = GameObject.Find("GlobalGameScript").GetComponent<GlobalGameScript>();
+		}
+
 		for (int i = 0; i < platforms.Count; i++) {
 			platformScripts.Add (platforms [i].GetComponent<Platform> ());
 		}
@@ -167,6 +187,7 @@ public class King : MonoBehaviour {
 			if (platformScripts [i].farming) {
 				farmingPlatforms.Add(platformScripts [i]);
 				farmingPlatformsUnderConstruction.Add(platformScripts [i]);// Setup all constructable platforms as "Under Construction"
+				platformsUnderConstruction.Add(platformScripts [i]);
 			}else if(platformScripts [i].logging){
 				loggingPlatforms.Add(platformScripts[i]);
 			}
@@ -176,18 +197,22 @@ public class King : MonoBehaviour {
 			else if(platformScripts [i].mine){
 				minePlatforms.Add(platformScripts[i]);
 				miningPlatformsUnderConstruction.Add(platformScripts [i]);// Setup all constructable platforms as "Under Construction"
+				platformsUnderConstruction.Add(platformScripts [i]);
 			}
 			else if(platformScripts [i].housing){
 				housingPlatforms.Add(platformScripts[i]);
 				housingPlatformsUnderConstruction.Add(platformScripts [i]);// Setup all constructable platforms as "Under Construction"
+				platformsUnderConstruction.Add(platformScripts [i]);
 			}
 			else if(platformScripts [i].workshop){
 				workshopPlatforms.Add(platformScripts[i]);
 				workshopPlatformsUnderConstruction.Add(platformScripts [i]);// Setup all constructable platforms as "Under Construction"
+				platformsUnderConstruction.Add(platformScripts [i]);
 			}
 			else if(platformScripts [i].archery){
 				archeryPlatforms.Add(platformScripts[i]);
 				archeryPlatformsUnderConstruction.Add(platformScripts [i]);// Setup all constructable platforms as "Under Construction"
+				platformsUnderConstruction.Add(platformScripts [i]);
 			}
 		}
 
@@ -199,13 +224,14 @@ public class King : MonoBehaviour {
 		}
 
 		if (npcScripts.Count > 0){
-		king = npcScripts[0];// assign the first NPC to be the king
+			king = npcScripts[0];// assign the first NPC to be the king
 		}
 
 	}
 
 	void Start(){
 		StartCoroutine(FirstTaskAssignments());
+		FindRequiredResources ();// set the docks to display which resources are required
 	}
 
 	IEnumerator FirstTaskAssignments(){
@@ -217,6 +243,7 @@ public class King : MonoBehaviour {
 	{
 		// Update all NPC tasks
 		for (int i = 0; i < npcScripts.Count; i++) {
+			Debug.Log("Set NPC TASK: " + npcScripts[i].gameObject.name);
 			npcScripts[i].FindTask();
 		}
 
@@ -235,6 +262,7 @@ public class King : MonoBehaviour {
 	// called after modifying the king script's NPCs list
 	public void UpdateNPCs ()
 	{
+		npcScripts.Clear();
 		for (int i = 0; i < npcs.Count; i++) {
 			npcScripts.Add(npcs[i].GetComponent<NPC>());
 			// TODO: make sure to update the King script when NPCs move between islands
@@ -243,10 +271,11 @@ public class King : MonoBehaviour {
 		UpdatePeasantCount ();
 	}
 
-	void ResetNPCLists(){
-		peasants = new List<NPC>();
-		builders = new List<NPC>();
-		archers = new List<NPC>();
+	void ResetNPCLists ()
+	{
+		peasants.Clear();// = new List<NPC>();
+		builders.Clear();// = new List<NPC>();
+		archers.Clear();// = new List<NPC>();
 	}
 
 	public void UpdatePeasantCount ()
@@ -275,12 +304,172 @@ public class King : MonoBehaviour {
 		}
 	}
 
+	void FindRequiredResources ()
+	{
+
+		Debug.Log("Find REquired resources...");
+
+		bool needFood = false;
+		bool needWood = false;
+		bool needStone = false;
+
+		int totalFoodRequired = 0;
+		int totalWoodRequired = 0;
+		int totalStoneRequired = 0;
+
+
+		for (int i = 0; i < platformsUnderConstruction.Count; i++) {
+			if (platformsUnderConstruction [i].cost.Length > 0) {
+				for (int j = 0; j < platformsUnderConstruction [i].cost.Length; j++) {
+					if (j == 0) {
+						totalFoodRequired += platformsUnderConstruction [i].cost [j];
+					}
+					if (j == 1) {
+						totalWoodRequired += platformsUnderConstruction [i].cost [j];
+					}
+					if (j == 2) {
+						totalStoneRequired += platformsUnderConstruction [i].cost [j];
+					}
+				}
+			}
+		}
+
+		if (totalFoodRequired > availableResources[0]) {
+			foodIcon.SetActive (true);
+		} else {
+			foodIcon.SetActive (false);
+		}
+
+		if (totalWoodRequired > availableResources[1]) {
+			woodIcon.SetActive (true);
+		} else {
+			woodIcon.SetActive (false);
+		}
+
+		if (totalStoneRequired > availableResources[2]) {
+			stoneIcon.SetActive (true);
+		} else {
+			stoneIcon.SetActive (false);
+		}
+
+	}
+
+	// POSITION the resource at the docks
+	// This is responsible for instantiating the resource object and positioning it properly at the docks
+	public void CreateAndPositionResource (int resourceType)
+	{
+		int resourceColumns = 1;
+		GameObject prefabToInst = null;
+		Transform docksLocation = foodResourceStore;// just put placeholder value here
+		Bounds resBounds = foodResourceBounds;// just put placeholder value here
+		switch (resourceType) {
+		case 0:
+			resourceColumns = foodResourceColumns;
+			prefabToInst = foodResourcePrefab;
+			docksLocation = foodResourceStore;
+			resBounds = foodResourceBounds;
+			break;
+		case 1:
+			resourceColumns = woodResourceColumns;
+			prefabToInst = woodResourcePrefab;
+			docksLocation = woodResourceStore;
+			resBounds = woodResourceBounds;
+			break;
+		case 2:
+			resourceColumns = stoneResourceColumns;
+			prefabToInst = stoneResourcePrefab;
+			docksLocation = stoneResourceStore;
+			resBounds = stoneResourceBounds;
+			break;
+		default:
+			Debug.Log ("Fall through King.cs PositionResource()");
+			break;
+		}
+		int resourcePositionIndex = availableResources [resourceType] - 1;
+		int yPosIndex = Mathf.FloorToInt (resourcePositionIndex / resourceColumns);
+		int xPosIndex = resourcePositionIndex - (3 * yPosIndex);
+
+		if (resourceType == 0) {
+			if (globalGameScript.foods.Count > 0) {
+				GameObject res = globalGameScript.foods[globalGameScript.foods.Count - 1];
+				res.SetActive(true);
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+				globalGameScript.foods.RemoveAt(globalGameScript.foods.Count - 1);
+			} else {
+				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
+				globalGameScript.foods.Add(res);
+			}
+		} else if (resourceType == 1) {
+			if (globalGameScript.woods.Count > 0) {
+				GameObject res = globalGameScript.woods[globalGameScript.woods.Count - 1];
+				res.SetActive(true);
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+				globalGameScript.woods.RemoveAt(globalGameScript.woods.Count - 1);
+			} else {
+				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
+				globalGameScript.woods.Add(res);
+			}
+		} else if (resourceType == 2) {
+			if (globalGameScript.stones.Count > 0) {
+				GameObject res = globalGameScript.stones[globalGameScript.stones.Count - 1];
+				res.SetActive(true);
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+				globalGameScript.stones.RemoveAt(globalGameScript.stones.Count - 1);
+			} else {
+				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
+				globalGameScript.stones.Add(res);
+			}
+		}else if (resourceType == 3){
+			if (globalGameScript.metals.Count > 0) {
+				GameObject res = globalGameScript.metals[globalGameScript.metals.Count - 1];
+				res.SetActive(true);
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+				globalGameScript.metals.RemoveAt(globalGameScript.metals.Count - 1);
+			} else {
+				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
+				globalGameScript.metals.Add(res);
+			}
+		}
+
+
+	}
+
+	public void RemoveAndPositionResource (int resourceType)
+	{
+		if (resourceType == 0) {
+			if (globalGameScript.foods.Count > 0) {
+				GameObject res = globalGameScript.foods[globalGameScript.foods.Count - 1];
+				res.SetActive(false);
+				globalGameScript.foods.Add(res);
+			}
+		} else if (resourceType == 1) {
+			if (globalGameScript.woods.Count > 0) {
+				GameObject res = globalGameScript.woods[globalGameScript.woods.Count - 1];
+				res.SetActive(false);
+				globalGameScript.woods.Add(res);
+			}
+		} else if (resourceType == 2) {
+			if (globalGameScript.stones.Count > 0) {
+				GameObject res = globalGameScript.stones[globalGameScript.stones.Count - 1];
+				res.SetActive(false);
+				globalGameScript.stones.Add(res);
+			}
+		}else if (resourceType == 3){
+			if (globalGameScript.metals.Count > 0) {
+				GameObject res = globalGameScript.metals[globalGameScript.metals.Count - 1];
+				res.SetActive(false);
+				globalGameScript.metals.Add(res);
+			}
+		}
+	}
+
 	// INFORM BUILDER THAT RESOURCE HAS ARRIVED --- used in NPC.cs
 	public void CheckResourceArrived ()
 	{
 		// only run this again after the second is up... otherwise it might get out of control
 		if (!checkingResourceArrived) {
 //			Debug.Log ("Check resource arrived");
+			FindRequiredResources();// Check if we have all the resources we require and switch the indicator either on or off
 			checkingResourceArrived = true;
 			StartCoroutine (AllowBuildersToTakeResource ());
 		}

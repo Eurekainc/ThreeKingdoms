@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 58578496832004306}
   m_Layer: 10
   m_Name: Builder
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198836372919214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.872021, y: -10.634264, z: 0.43}
+  m_LocalPosition: {x: 12.85, y: -1.73, z: 0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -111,7 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kingScript: {fileID: 0}
   active: 0
-  timeToDegrade: 50
   occupation: 3
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}
@@ -136,7 +135,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

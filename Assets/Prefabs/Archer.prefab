@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 58029317695191866}
   m_Layer: 10
   m_Name: Archer
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kingScript: {fileID: 0}
   active: 0
-  timeToDegrade: 50
   occupation: 4
   waitingForFarmingPlatform: 0
   destinationPlatformScript: {fileID: 0}

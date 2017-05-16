@@ -99,6 +99,7 @@
      <Compile Include="Assets\Scripts\Boat.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
+     <Compile Include="Assets\Scripts\GlobalGameScript.cs" />
      <Compile Include="Assets\Scripts\King.cs" />
      <Compile Include="Assets\Scripts\LocalNavMeshBuilder.cs" />
      <Compile Include="Assets\Scripts\NPC.cs" />

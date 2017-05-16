@@ -77,21 +77,21 @@ public class Player : MonoBehaviour {
 		}
 
 		// Calling NPC, maybe jumping if on land???
-		if (Input.GetButtonDown ("Fire3") && !callingNPC) {
-			callingNPC = true;
-		}
+//		if (Input.GetButtonDown ("Fire3") && !callingNPC) {
+//			callingNPC = true;
+//		}
 
-		if (callingNPC) {
-			CallNPC (ringElapsedTime / ringTime);
-			ringElapsedTime += Time.deltaTime;
-
-			if (ringElapsedTime >= ringTime) {
-				ringElapsedTime = 0.0f;
-				callingNPC = false;
-				ring.transform.localScale = new Vector3 (1, 1, 1);
-				ring.SetActive (false);
-			}
-		}
+//		if (callingNPC) {
+//			CallNPC (ringElapsedTime / ringTime);
+//			ringElapsedTime += Time.deltaTime;
+//
+//			if (ringElapsedTime >= ringTime) {
+//				ringElapsedTime = 0.0f;
+//				callingNPC = false;
+//				ring.transform.localScale = new Vector3 (1, 1, 1);
+//				ring.SetActive (false);
+//			}
+//		}
 
 		// Picking up NPC
 //		if (currentKingScript != null) {
@@ -141,15 +141,14 @@ public class Player : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown ("up")) {
-			if (passengers.Count > 0) {
-				Debug.Log ("Drop off NPC");
+			if (passengers.Count > 0 && currentKingScript != null) {
 				NPC droppedOffNPC = passengers[passengers.Count - 1];
 				droppedOffNPC.gameObject.SetActive(true);
-				droppedOffNPC.DropOff(currentKingScript.ferryPickUp.position, currentKingScript);
+				droppedOffNPC.DropOff(currentKingScript.foodResourceStore.position, currentKingScript);// Drop NPC off at specific position on teh docks... food point for now
 				passengers.RemoveAt (passengers.Count - 1);
 				currentInventory--;
 			} else {
-				Debug.Log ("Haven't got any NPCs in the inventory... ");
+				Debug.Log ("Haven't got any NPCs in the inventory... or there's no currentKingScript");
 			}
 		}
 
@@ -157,14 +156,14 @@ public class Player : MonoBehaviour {
 
 	}
 
-	void CallNPC (float fracTime)
-	{
-		Debug.Log ("Call NPC");
-		if (!ring.active) {
-			ring.SetActive (true);
-		}
-		ring.transform.localScale = Vector3.Lerp(ring.transform.localScale, new Vector3(20, 20, 20), fracTime);
-	}
+//	void CallNPC (float fracTime)
+//	{
+//		Debug.Log ("Call NPC");
+//		if (!ring.active) {
+//			ring.SetActive (true);
+//		}
+//		ring.transform.localScale = Vector3.Lerp(ring.transform.localScale, new Vector3(20, 20, 20), fracTime);
+//	}
 
 	void OnTriggerEnter2D (Collider2D col)
 	{
@@ -175,9 +174,11 @@ public class Player : MonoBehaviour {
 //				Debug.Log("can pick up NPC...");
 //			}
 		}
-		if (col.CompareTag ("Island")) {
-			currentKingScript = col.gameObject.GetComponent<King>();
+		if (col.CompareTag ("Docks")) {
+			GameObject docksObj = col.gameObject;
+			currentKingScript = docksObj.GetComponent<Platform>().kingScript;
 		}
+
 	}
 
 
@@ -191,10 +192,10 @@ public class Player : MonoBehaviour {
 //			}
 		}
 
-		// maybe don't clear king script in case exiting a trigger after entering another trigger
-//		if (col.CompareTag ("Island")) {
-//			currentKingScript = null;
-//		}
+		// Beware, if islands are too close together and 1 docks is entered before another is exited, it might clear the new docks object when it actuially wants to clear the old docks kingScript
+		if (col.CompareTag ("Docks")) {
+			currentKingScript = null;
+		}
 	}
 
 
