@@ -29,6 +29,12 @@ public class Player : MonoBehaviour {
 	public float ringTime = 2.0f;
 	private float ringElapsedTime = 0.0f;
 
+	// Detect which resources to load
+	// this also appears in King.cs
+	public bool canLoadFood = false;
+	public bool canLoadWood = false;
+	public bool canLoadStone = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -40,98 +46,35 @@ public class Player : MonoBehaviour {
 
 		Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
-//		// TODO: find a reliable way to only detect one resource type at a time
-		Collider2D resourceObj = Physics2D.OverlapCircle (resourceSensor.position, 1.0f, resourceLayer);
-		if (resourceObj != null) {
-			if (resourceMarker == null) {
-				resourceMarker = resourceObj.gameObject.GetComponent<ResourceMarker> ();
-				resourceMarker.selected = true;
-			}
+		// RESOURCE SENSING
 
-			if (Input.GetKeyDown ("down")) {
-				if (currentInventory < maxInventory) {
-					currentInventory++;
-					Debug.Log ("Pick up object / resource");
-					int resourceIndex = resourceMarker.RemoveResource ();
-					inventoryResources [resourceIndex]++;
-				} else {
-					Debug.Log ("Inventory full");
-				}
-			}
-			if (Input.GetKeyDown ("up")) {
-				if (inventoryResources [resourceMarker.resourceIndex] > 0) {
-					Debug.Log ("Drop off object / resource");
-					int resourceIndex = resourceMarker.AddResource ();
-					inventoryResources [resourceIndex]--;
-					if (currentInventory > 0) {
-						currentInventory--;
-					}
-				} else {
-					Debug.Log ("Haven't got any of this in the inventory... " + resourceMarker.resourceIndex);
-				}
-			}
-		}
-		if (resourceObj == null && resourceMarker != null) {
-			resourceMarker.selected = false;
-			resourceMarker = null;
-		}
-
-		// Calling NPC, maybe jumping if on land???
-//		if (Input.GetButtonDown ("Fire3") && !callingNPC) {
-//			callingNPC = true;
-//		}
-
-//		if (callingNPC) {
-//			CallNPC (ringElapsedTime / ringTime);
-//			ringElapsedTime += Time.deltaTime;
-//
-//			if (ringElapsedTime >= ringTime) {
-//				ringElapsedTime = 0.0f;
-//				callingNPC = false;
-//				ring.transform.localScale = new Vector3 (1, 1, 1);
-//				ring.SetActive (false);
-//			}
-//		}
-
-		// Picking up NPC
-//		if (currentKingScript != null) {
-//			Collider2D waitingNPC = Physics2D.OverlapCircle (currentKingScript.ferryPickUp.position, 1.0f, npcLayer);
-//			if (waitingNPC != null) {
-//				if (Input.GetKeyDown ("down")) {
-//					if (currentInventory < maxInventory) {
-//						Debug.Log ("Pick up NPC");
-//						NPC pickedUpNPC = waitingNPC.gameObject.GetComponent<NPC> ();
-//						pickedUpNPC.PickUp();
-//						passengers.Add (pickedUpNPC);
-//						currentInventory++;
-//
-//					} else {
-//						Debug.Log ("Inventory full");
-//					}
-//				}
-//
-//				if (Input.GetKeyDown ("up")) {
-//					if (passengers.Count > 0) {
-//						Debug.Log ("Drop off NPC");
-//						NPC droppedOffNPC = passengers[passengers.Count - 1];
-//						droppedOffNPC.gameObject.SetActive(true);
-//						droppedOffNPC.DropOff(currentKingScript.ferryPickUp.position, currentKingScript);
-//						passengers.RemoveAt (passengers.Count - 1);
-//						currentInventory--;
-//					} else {
-//						Debug.Log ("Haven't got any NPCs in the inventory... ");
-//					}
-//				}
-//			}
-//		}
 		if (Input.GetKeyDown ("down")) {
 			if (currentInventory < maxInventory) {
-				Debug.Log ("Pick up NPC");
-				if (npcsInRange.Count > 0) {
+				Debug.Log ("Pick up NPC or resource");
+				// picking up resource takes priority over NPC, because itherwise may interrupt NPC from doing work
+				if (canLoadFood && currentKingScript.availableResources[0] > 0){
+					Debug.Log("Pick up FOOD");
+					inventoryResources[0]++;
+					currentKingScript.availableResources[0]--;
+					currentKingScript.RemoveAndPositionResource (0);
+					currentInventory++;
+				}
+				else if (canLoadWood && currentKingScript.availableResources[1] > 0){
+					Debug.Log("Pick up WOOD");
+					inventoryResources[1]++;
+					currentKingScript.availableResources[1]--;
+					currentKingScript.RemoveAndPositionResource (1);
+					currentInventory++;
+				}else if (canLoadStone && currentKingScript.availableResources[2] > 0){
+					Debug.Log("Pick up STONE");
+					inventoryResources[2]++;
+					currentKingScript.availableResources[2]--;
+					currentKingScript.RemoveAndPositionResource (2);
+					currentInventory++;
+				}
+				else if (npcsInRange.Count > 0) {
 					passengers.Add (npcsInRange[npcsInRange.Count - 1]);
 					npcsInRange[npcsInRange.Count - 1].PickUp ();
-//					npcsInRange.RemoveAt(npcsInRange.Count - 1);
-//					Debug.Log("error??? " + npcsInRange[npcsInRange.Count - 1].movingToPlatform);
 					currentInventory++;
 				}
 
@@ -141,7 +84,27 @@ public class Player : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown ("up")) {
-			if (passengers.Count > 0 && currentKingScript != null) {
+			if (canLoadFood && inventoryResources[0] > 0){
+				Debug.Log("Drop off FOOD");
+				inventoryResources[0]--;
+				currentKingScript.availableResources[0]++;
+				currentKingScript.CreateAndPositionResource (0);
+				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
+			}
+			else if (canLoadWood && inventoryResources[1] > 0){
+				Debug.Log("Drop off WOOD");
+				inventoryResources[1]--;
+				currentKingScript.availableResources[1]++;
+				currentKingScript.CreateAndPositionResource (1);
+				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
+			}else if (canLoadStone && inventoryResources[2] > 0){
+				Debug.Log("Drop off STONE");
+				inventoryResources[2]--;
+				currentKingScript.availableResources[2]++;
+				currentKingScript.CreateAndPositionResource (2);
+				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
+			}
+			else if (passengers.Count > 0 && currentKingScript != null) {
 				NPC droppedOffNPC = passengers[passengers.Count - 1];
 				droppedOffNPC.gameObject.SetActive(true);
 				droppedOffNPC.DropOff(currentKingScript.foodResourceStore.position, currentKingScript);// Drop NPC off at specific position on teh docks... food point for now
@@ -152,7 +115,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		transform.Translate(new Vector3(0.8f * input.x, 0, 0));
+		transform.Translate(new Vector3(0.3f * input.x, 0, 0));
 
 	}
 

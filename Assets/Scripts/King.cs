@@ -139,6 +139,13 @@ public class King : MonoBehaviour {
 	public GameObject woodIcon;
 	public GameObject stoneIcon;
 
+	// Resource Lists - used to keep track of which objects are taken from GlobalGameScript.cs and assigned to this island
+	// these lists are used in the methods: RemoveAndPositionResource() & CreateAndPositionResource()
+	private List<GameObject> foods = new List<GameObject>();
+	private List<GameObject> woods = new List<GameObject>();
+	public List<GameObject> stones = new List<GameObject>();// made public for debugging purposes
+	private List<GameObject> metals = new List<GameObject>();
+
 	// ferry pickup point where player picks up NPCs
 	public Transform ferryPickUp;
 	public List<NPC> npcsWaitingForFerry = new List<NPC>();
@@ -170,6 +177,12 @@ public class King : MonoBehaviour {
 	// Archers adn attack logic
 	public bool enemySighted = false;
 	public Transform enemyTransform;
+
+	// Detect which resources to load
+	// this is also in Player .cs
+	public bool canLoadFood = false;
+	public bool canLoadWood = false;
+	public bool canLoadStone = false;
 
 	// Use this for initialization
 	void Awake ()
@@ -241,6 +254,7 @@ public class King : MonoBehaviour {
 
 	public void SetNPCTasks ()
 	{
+		Debug.Log("SET NPC TASKKKKK " + gameObject.name);
 		// Update all NPC tasks
 		for (int i = 0; i < npcScripts.Count; i++) {
 			Debug.Log("Set NPC TASK: " + npcScripts[i].gameObject.name);
@@ -386,49 +400,64 @@ public class King : MonoBehaviour {
 			break;
 		}
 		int resourcePositionIndex = availableResources [resourceType] - 1;
+		Debug.Log ("available resources: " + resourcePositionIndex);
 		int yPosIndex = Mathf.FloorToInt (resourcePositionIndex / resourceColumns);
-		int xPosIndex = resourcePositionIndex - (3 * yPosIndex);
+		int xPosIndex = resourcePositionIndex - (resourceColumns * yPosIndex);
 
 		if (resourceType == 0) {
-			if (globalGameScript.foods.Count > 0) {
-				GameObject res = globalGameScript.foods[globalGameScript.foods.Count - 1];
-				res.SetActive(true);
+			GameObject res = GetFirstInactiveGameObjectFromList (globalGameScript.foods);
+			if (res == null) {
+				res = (GameObject)Instantiate (prefabToInst, new Vector3 (0,0,0), Quaternion.identity);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
 				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
-				globalGameScript.foods.RemoveAt(globalGameScript.foods.Count - 1);
-			} else {
-				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
 				globalGameScript.foods.Add(res);
+			} else {
+				res.SetActive(true);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
 			}
+			foods.Add(res);// add to local King.cs list
 		} else if (resourceType == 1) {
-			if (globalGameScript.woods.Count > 0) {
-				GameObject res = globalGameScript.woods[globalGameScript.woods.Count - 1];
-				res.SetActive(true);
+			GameObject res = GetFirstInactiveGameObjectFromList (globalGameScript.woods);
+			if (res == null) {
+				res = (GameObject)Instantiate (prefabToInst, new Vector3 (0,0,0), Quaternion.identity);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
 				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
-				globalGameScript.woods.RemoveAt(globalGameScript.woods.Count - 1);
-			} else {
-				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
 				globalGameScript.woods.Add(res);
+			} else {
+				res.SetActive(true);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
 			}
+			woods.Add(res);// add to local King.cs list
 		} else if (resourceType == 2) {
-			if (globalGameScript.stones.Count > 0) {
-				GameObject res = globalGameScript.stones[globalGameScript.stones.Count - 1];
-				res.SetActive(true);
+			GameObject res = GetFirstInactiveGameObjectFromList (globalGameScript.stones);
+			if (res == null) {
+				res = (GameObject)Instantiate (prefabToInst, new Vector3 (0,0,0), Quaternion.identity);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				Debug.Log("resBounds.size.x: " + resBounds.size.x);
 				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
-				globalGameScript.stones.RemoveAt(globalGameScript.stones.Count - 1);
-			} else {
-				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
 				globalGameScript.stones.Add(res);
-			}
-		}else if (resourceType == 3){
-			if (globalGameScript.metals.Count > 0) {
-				GameObject res = globalGameScript.metals[globalGameScript.metals.Count - 1];
-				res.SetActive(true);
-				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
-				globalGameScript.metals.RemoveAt(globalGameScript.metals.Count - 1);
 			} else {
-				GameObject res = (GameObject)Instantiate (prefabToInst, new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z), Quaternion.identity);
-				globalGameScript.metals.Add(res);
+				res.SetActive(true);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				Debug.Log("resBounds.size.x: " + resBounds.size.x);
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
 			}
+			stones.Add(res);// add to local King.cs list
+		}else if (resourceType == 3){
+			GameObject res = GetFirstInactiveGameObjectFromList (globalGameScript.metals);
+			if (res == null) {
+				res = (GameObject)Instantiate (prefabToInst, new Vector3 (0,0,0), Quaternion.identity);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+				globalGameScript.metals.Add(res);
+			} else {
+				res.SetActive(true);
+				resBounds = res.GetComponent<BoxCollider2D>().bounds;
+				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
+			}
+			metals.Add(res);// add to local King.cs list
 		}
 
 
@@ -436,30 +465,62 @@ public class King : MonoBehaviour {
 
 	public void RemoveAndPositionResource (int resourceType)
 	{
+		Debug.Log("Remove resource from island");
 		if (resourceType == 0) {
-			if (globalGameScript.foods.Count > 0) {
-				GameObject res = globalGameScript.foods[globalGameScript.foods.Count - 1];
+			if (foods.Count > 0) {
+				GameObject res = foods[foods.Count - 1];
+				foods.Remove(res);
 				res.SetActive(false);
-				globalGameScript.foods.Add(res);
 			}
 		} else if (resourceType == 1) {
-			if (globalGameScript.woods.Count > 0) {
-				GameObject res = globalGameScript.woods[globalGameScript.woods.Count - 1];
+			if (woods.Count > 0) {
+				GameObject res = woods[woods.Count - 1];
+				woods.Remove(res);
 				res.SetActive(false);
-				globalGameScript.woods.Add(res);
 			}
 		} else if (resourceType == 2) {
-			if (globalGameScript.stones.Count > 0) {
-				GameObject res = globalGameScript.stones[globalGameScript.stones.Count - 1];
+			Debug.Log("Remove resource type 2");
+			if (stones.Count > 0) {
+				Debug.Log("remove stone");
+				GameObject res = stones[stones.Count - 1];
+				stones.Remove(res);
+				Debug.Log("stone removed");
 				res.SetActive(false);
-				globalGameScript.stones.Add(res);
 			}
 		}else if (resourceType == 3){
-			if (globalGameScript.metals.Count > 0) {
-				GameObject res = globalGameScript.metals[globalGameScript.metals.Count - 1];
+			if (metals.Count > 0) {
+				GameObject res = metals[metals.Count - 1];
+				metals.Remove(res);
 				res.SetActive(false);
-				globalGameScript.metals.Add(res);
 			}
+		}
+	}
+
+	// Player over resource - RESOURCE SELECT
+	public void SelectResource (int resourceType)
+	{
+		if (resourceType == 0) {
+			canLoadFood = true;
+			foodIcon.transform.position = new Vector3(foodIcon.transform.position.x, foodIcon.transform.position.y + 1, foodIcon.transform.position.z);
+		}else if (resourceType == 1){
+			canLoadWood = true;
+			woodIcon.transform.position = new Vector3(woodIcon.transform.position.x, woodIcon.transform.position.y + 1, foodIcon.transform.position.z);
+		}else if (resourceType == 2){
+			canLoadStone = true;
+			stoneIcon.transform.position = new Vector3(stoneIcon.transform.position.x, stoneIcon.transform.position.y + 1, stoneIcon.transform.position.z);
+		}
+	}
+	public void DeSelectResource (int resourceType)
+	{
+		if (resourceType == 0) {
+			canLoadFood = false;
+			foodIcon.transform.position = new Vector3(foodIcon.transform.position.x, foodIcon.transform.position.y - 1, foodIcon.transform.position.z);
+		}else if (resourceType == 1){
+			canLoadWood = false;
+			woodIcon.transform.position = new Vector3(woodIcon.transform.position.x, woodIcon.transform.position.y - 1, foodIcon.transform.position.z);
+		}else if (resourceType == 2){
+			canLoadStone = false;
+			stoneIcon.transform.position = new Vector3(stoneIcon.transform.position.x, stoneIcon.transform.position.y - 1, stoneIcon.transform.position.z);
 		}
 	}
 
@@ -542,6 +603,20 @@ public class King : MonoBehaviour {
 		if (dict.ContainsKey (key)) {
 			dict[key]--;
 		}
+	 }
+
+	public GameObject GetFirstInactiveGameObjectFromList (List<GameObject> list)
+	{
+		GameObject returnedGO = null;
+		for (int i = 0; i < list.Count; i++) {
+			if (!list [i].active) {
+				returnedGO = list[i];
+				break;
+			}
+		}
+
+		return returnedGO;
+
 	 }
 
 

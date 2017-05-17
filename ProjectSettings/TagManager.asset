@@ -8,6 +8,9 @@ TagManager:
   - NPC
   - Island
   - Docks
+  - Wood
+  - Food
+  - Stone
   layers:
   - Default
   - TransparentFX

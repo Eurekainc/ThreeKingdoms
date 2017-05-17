@@ -125,6 +125,8 @@ public class NPC : MonoBehaviour {
 			GoToWorkPlatformPeasant ();
 		} else {
 			waitingForFarmingPlatform = true;// this is used when a farm is built, then can call this particular NPC to go farming
+			// TODO: be careful here, if there's a platform with some resource as well as a farm, peasants may change occupation adn never have the opportunity to become a farmer again
+			StartCoroutine(ChangePeasantOccupation());
 		}
 	}
 	void FindForrest ()
@@ -136,6 +138,7 @@ public class NPC : MonoBehaviour {
 			GoToWorkPlatformPeasant ();
 		} else {
 			Debug.Log("No forrests to chop down... just idle about");
+			StartCoroutine(ChangePeasantOccupation());
 		}
 
 	}
@@ -149,6 +152,7 @@ public class NPC : MonoBehaviour {
 			GoToWorkPlatformPeasant ();
 		} else {
 			Debug.Log("No quarries to quarry... just idle about");
+			StartCoroutine(ChangePeasantOccupation());
 		}
 
 	}
@@ -541,6 +545,9 @@ public class NPC : MonoBehaviour {
 	}
 
 	public void PickUp(){
+//		destinationPlatformScript = null;
+//		active = false;
+		movingToPlatform = false;
 		kingScript.npcs.Remove(gameObject);
 		kingScript.UpdateNPCs ();
 		gameObject.SetActive(false);
@@ -549,6 +556,7 @@ public class NPC : MonoBehaviour {
 		agent.Warp(newPosition);
 		kingScript = newKingScript;
 		kingScript.npcs.Add(gameObject);
+		Debug.Log("Should update NPCs and set tasks........");
 		kingScript.UpdateNPCs ();
 
 	}
@@ -616,6 +624,7 @@ public class NPC : MonoBehaviour {
 			if (destinationPlatformScript.cost [i] > 0 && kingScript.availableResources [i] > 0) {
 				kingScript.availableResources [i]--;
 				carriedResourceIndex = i;
+				kingScript.RemoveAndPositionResource (carriedResourceIndex);// this needs to be called after carriedResourceIndex is assigned otherwise it removes the wrong object from resources
 				gotResource = true;
 				break;
 			}
@@ -623,22 +632,8 @@ public class NPC : MonoBehaviour {
 
 		if (gotResource) {
 			carryingResource = true;
-			kingScript.RemoveAndPositionResource (carriedResourceIndex);
 			GoToWorkPlatformBuilder ();
 		} else {
-//			Debug.Log("NEEd RESOURCEEE");
-			// Didn't get any resource, so,  Which resources does this builder need?
-//			for (int i = 0; i < destinationPlatformScript.cost.Length; i++) {
-//				if (destinationPlatformScript.cost [i] > 0) {
-//					if (i == 0) {
-//						Debug.Log("needFood");
-//					} else if (i == 1) {
-//						Debug.Log("needWood");
-//					} else if (i == 2) {
-//						Debug.Log("needStone");
-//					}
-//				}
-//			}
 
 			kingScript.resourceQueue.Add (this);
 
