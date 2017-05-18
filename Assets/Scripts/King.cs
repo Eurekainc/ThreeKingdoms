@@ -113,6 +113,10 @@ public class King : MonoBehaviour {
 	// 1 -> wood
 	// 2 -> stone
 	// 3 -> metal
+	public int initialFood = 0;
+	public int initialWood = 0;
+	public int initialStone = 0;
+	public int initialMetal = 0;
 	public int[] availableResources = new int[4];
 
 	// builder's queue to wait for resources
@@ -245,6 +249,37 @@ public class King : MonoBehaviour {
 	void Start(){
 		StartCoroutine(FirstTaskAssignments());
 		FindRequiredResources ();// set the docks to display which resources are required
+		CreateInitialResources();
+	}
+
+	void CreateInitialResources ()
+	{
+		
+		if (initialFood > 0) {
+			for (int i = 0; i < initialFood; i++) {
+				CreateAndPositionResource (0);
+				availableResources[0]++;
+			}
+		}
+		if (initialWood > 0) {
+			for (int i = 0; i < initialWood; i++) {
+				CreateAndPositionResource (1);
+				availableResources[1]++;
+			}
+		}
+		if (initialStone > 0) {
+			for (int i = 0; i < initialStone; i++) {
+				CreateAndPositionResource (2);
+				availableResources[2]++;
+			}
+		}
+//		if (initialMetal > 0) {
+//			for (int i = 0; i < availableResources [3]; i++) {
+//				CreateAndPositionResource (3);
+//				availableResources[3]++;
+//			}
+//		}
+		
 	}
 
 	IEnumerator FirstTaskAssignments(){

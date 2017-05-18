@@ -14,6 +14,7 @@ public class House : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		platformScript = GetComponent<Platform>();
+		kingScript = platformScript.kingScript;
 	}
 
 	public void Activate ()

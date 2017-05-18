@@ -98,6 +98,7 @@
      <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
      <Compile Include="Assets\Scripts\Boat.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\Dragon.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\GlobalGameScript.cs" />
      <Compile Include="Assets\Scripts\King.cs" />
@@ -123,6 +124,16 @@
      <Compile Include="Assets\Scripts\Water\Water.cs" />
      <Compile Include="Assets\Scripts\Water\WaterDetector.cs" />
      <Compile Include="Assets\Scripts\Water\WaterForce.cs" />
+     <Compile Include="Assets\Steer2D\Examples\Assets\Target.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Arrive.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Evade.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Flee.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Flock.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\FollowPath.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Pursue.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\Seek.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\SteeringAgent.cs" />
+     <Compile Include="Assets\Steer2D\Scripts\SteeringBehaviour.cs" />
      <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Color\Vertex Color Color Blend Mobile.shader" />

@@ -217,6 +217,7 @@ public class NPC : MonoBehaviour {
 		}
 		// if there are no farms, but there are houses, then houses are the priority
 		else if (farmingPlatformsToBuild <= 0 && housingPlatformsToBuild > 0){
+			Debug.Log("SHOULD BUILD HOUSESSSSZZZZ   ...");
 			// if there are houses to build, at least 1 farm and no built houses and not already building
 			if (housingPlatformsToBuild > 0 && builtHouses <= 0 && !haveTask) {
 				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.housingPlatformsUnderConstruction, kingScript.platformBuilder);
@@ -458,11 +459,11 @@ public class NPC : MonoBehaviour {
 	{
 
 		if (goingToFerry) {
-			Debug.Log("Arrived at ferry");
-			kingScript.npcsWaitingForFerry.Add(this);
+			Debug.Log ("Arrived at ferry");
+			kingScript.npcsWaitingForFerry.Add (this);
 			goingToFerry = false;
 			waitingForFerry = true;
-			StartCoroutine(WaitAtFerry());
+			StartCoroutine (WaitAtFerry ());
 		} else {
 
 			if (occupation == 0) {
@@ -504,19 +505,23 @@ public class NPC : MonoBehaviour {
 			// builder is carrying resource so they're here to build
 			// or possibly they were trying to build another structure which was completed before builder arrived with resource.... in that case return teh resource
 			else {
-					if (destinationPlatformScript.farming) {
-						StartCoroutine (BuildSectionOfStructure ());
-					} else if (destinationPlatformScript.quarry) {
-						StartCoroutine (BuildSectionOfStructure ());
-					} else if (destinationPlatformScript.mine) {
-						StartCoroutine (BuildSectionOfStructure ());
-					} else if (destinationPlatformScript.housing) {
-						StartCoroutine (BuildSectionOfStructure ());
-					} else if (destinationPlatformScript.workshop) {
-						StartCoroutine (BuildSectionOfStructure ());
-					} else if (destinationPlatformScript.archery) {
-						StartCoroutine (BuildSectionOfStructure ());
+					if (!destinationPlatformScript.underConstruction) {
+						destinationPlatformScript.underConstruction = true;
 					}
+					StartCoroutine (BuildSectionOfStructure ());
+//					if (destinationPlatformScript.farming) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					} else if (destinationPlatformScript.quarry) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					} else if (destinationPlatformScript.mine) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					} else if (destinationPlatformScript.housing) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					} else if (destinationPlatformScript.workshop) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					} else if (destinationPlatformScript.archery) {
+//						StartCoroutine (BuildSectionOfStructure ());
+//					}
 				}
 			} else if (occupation == 4) {
 				Patrol ();// check for enemies in Patrol function
@@ -647,7 +652,7 @@ public class NPC : MonoBehaviour {
 	IEnumerator BuildSectionOfStructure ()
 	{
 		yield return new WaitForSeconds (kingScript.buildTime);
-		// subtract the carried resource form the cost
+		// subtract the carried resource from the cost
 		destinationPlatformScript.cost [carriedResourceIndex]--;
 		carryingResource = false;
 
@@ -655,6 +660,8 @@ public class NPC : MonoBehaviour {
 		for (int i = 0; i < destinationPlatformScript.cost.Length; i++) {
 			itemsStillRequired += destinationPlatformScript.cost [i];
 		}
+
+		destinationPlatformScript.ConstructSection();// this moves a piece of the structure into place
 
 		if (itemsStillRequired <= 0) {
 			ActivateStructure (destinationPlatformScript);
@@ -664,7 +671,7 @@ public class NPC : MonoBehaviour {
 				kingScript.platformBuilder [destinationPlatformScript]--;
 			}
 			kingScript.NotifyWaitingPeasants ();// notify any peasants that may have been waiting for this structure
-			active = false;
+//			active = false;
 			FindBuildTask ();
 		} else {
 			SendBuilderToDocks(destinationPlatformScript.transform, destinationPlatformScript);
