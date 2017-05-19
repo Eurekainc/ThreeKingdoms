@@ -43,6 +43,9 @@ public class Platform : MonoBehaviour {
 
 	public int level = 0;
 
+	// resident npcs -> NPCs created by this platform, i.e. peasants form houses, or archers from barracks/archery range
+	public List<NPC> residentNPCs = new List<NPC>();
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -145,26 +148,31 @@ public class Platform : MonoBehaviour {
 				nonZeroIndices.Add (i);
 			}
 		}
-		Debug.Log("nonZeroIndices: " + nonZeroIndices);
-		int randomIndex = nonZeroIndices[Random.Range (0, nonZeroIndices.Count)];// integer version of Random.Range excludes the end value, so doesn't need to be Count - 1
+		Debug.Log ("nonZeroIndices: " + nonZeroIndices);
+		int randomIndex = nonZeroIndices [Random.Range (0, nonZeroIndices.Count)];// integer version of Random.Range excludes the end value, so doesn't need to be Count - 1
 		cost [randomIndex]++;
 
 		if (farming) {
 			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
 				kingScript.farmingPlatformsUnderConstruction.Add (this);
 			}
-		}else if (housing){
+		} else if (housing) {
 			if (!kingScript.housingPlatformsUnderConstruction.Contains (this)) {
 				kingScript.housingPlatformsUnderConstruction.Add (this);
 			}
-		}else if (workshop){
+		} else if (workshop) {
 			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
 				kingScript.workshopPlatformsUnderConstruction.Add (this);
 			}
-		}else if (archery){
+		} else if (archery) {
 			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
 				kingScript.archeryPlatformsUnderConstruction.Add (this);
 			}
+		}
+
+		// NPCs degrade as structure degrades
+		for (int i = 0; i < residentNPCs.Count; i++) {
+			residentNPCs[i].DegradeStats();
 		}
 
 		kingScript.UpdateNPCs ();// should tell builders to get building
@@ -186,6 +194,11 @@ public class Platform : MonoBehaviour {
 		for (int i = 0; i < models.Length; i++) {
 			models [i].transform.localPosition = Vector3.zero;
 			models [i].transform.localRotation = Quaternion.Euler (-180, 0, 0);
+		}
+
+		// NPCs upgrade when structure is repaired fully (opposite to the DamageStructure method)
+		for (int i = 0; i < residentNPCs.Count; i++) {
+			residentNPCs[i].UpgradeStats();
 		}
 
 //		for (int i = 0; i < models.Length; i++) {

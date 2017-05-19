@@ -63,6 +63,14 @@ public class NPC : MonoBehaviour {
 
 	}
 
+	// when resident structure is damaged, then speed, HP and Attack points are reduced
+	public void DegradeStats(){
+		agent.speed = kingScript.slowSpeed;
+	}
+	public void UpgradeStats(){
+		agent.speed = kingScript.fastSpeed;
+	}
+
 	public void FindTask(){
 		destinationPlatformScript = null;
 		if (occupation == 0) {

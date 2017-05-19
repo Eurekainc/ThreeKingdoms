@@ -177,6 +177,10 @@ public class King : MonoBehaviour {
 	public List<Platform> peasantTasks = new List<Platform>();
 	public List<Platform> builderTasks = new List<Platform>();
 
+	// NPC stats, speed attack points, health points etc.
+	public float slowSpeed = 1.0f;
+	public float mediumSpeed = 3.0f;
+	public float fastSpeed = 10.0f;
 
 	// Archers adn attack logic
 	public bool enemySighted = false;

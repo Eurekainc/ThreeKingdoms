@@ -71,6 +71,7 @@ public class House : MonoBehaviour {
 			peasantScript.kingScript = kingScript;
 			peasantScript.occupation = i;// 0 = woodcutter, 1 = quarryman, 2 = farmer
 			kingScript.npcScripts.Add (peasantScript);
+			platformScript.residentNPCs.Add(peasantScript);
 //			peasantScript.Init();
 		}
 		StartCoroutine(RecruitPeasantsInSystem());// put this in a coroutine to give the peasants a chance to run Awake() and Start(), before being accessed by the Kingscript

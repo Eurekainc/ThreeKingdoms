@@ -55,6 +55,7 @@ public class Archery : MonoBehaviour {
 			newNPCScript.kingScript = kingScript;
 			newNPCScript.occupation = 4;// 0 = woodcutter, 1 = quarryman, 2 = farmer, 3 = builder, 4 = archer, 5 = King
 			kingScript.npcScripts.Add (newNPCScript);
+			platformScript.residentNPCs.Add(newNPCScript);
 		}
 		StartCoroutine(RecruitPeasantsInSystem());// put this in a coroutine to give the peasants a chance to run Awake() and Start(), before being accessed by the Kingscript
 		archersToSpawn = 0;
