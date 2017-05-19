@@ -5,6 +5,8 @@ using NUnit.Framework;
 
 public class GlobalGameScript : MonoBehaviour {
 
+	public List<King> islands = new List<King>();
+
 	// THIS IS USED FOR OBJECT POOLING... KEEP LISTS OF ALL INSTANTAITED RESOURCES NOTBEING USED
 	public List<GameObject> foods = new List<GameObject>();
 	public List<GameObject> woods = new List<GameObject>();

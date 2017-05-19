@@ -289,10 +289,10 @@ public class King : MonoBehaviour {
 
 	public void SetNPCTasks ()
 	{
-		Debug.Log("SET NPC TASKKKKK " + gameObject.name);
+//		Debug.Log("SET NPC TASKKKKK " + gameObject.name);
 		// Update all NPC tasks
 		for (int i = 0; i < npcScripts.Count; i++) {
-			Debug.Log("Set NPC TASK: " + npcScripts[i].gameObject.name);
+//			Debug.Log("Set NPC TASK: " + npcScripts[i].gameObject.name);
 			npcScripts[i].FindTask();
 		}
 
@@ -356,7 +356,7 @@ public class King : MonoBehaviour {
 	void FindRequiredResources ()
 	{
 
-		Debug.Log("Find REquired resources...");
+//		Debug.Log("Find REquired resources...");
 
 		bool needFood = false;
 		bool needWood = false;
@@ -435,7 +435,7 @@ public class King : MonoBehaviour {
 			break;
 		}
 		int resourcePositionIndex = availableResources [resourceType] - 1;
-		Debug.Log ("available resources: " + resourcePositionIndex);
+//		Debug.Log ("available resources: " + resourcePositionIndex);
 		int yPosIndex = Mathf.FloorToInt (resourcePositionIndex / resourceColumns);
 		int xPosIndex = resourcePositionIndex - (resourceColumns * yPosIndex);
 
@@ -470,13 +470,13 @@ public class King : MonoBehaviour {
 			if (res == null) {
 				res = (GameObject)Instantiate (prefabToInst, new Vector3 (0,0,0), Quaternion.identity);
 				resBounds = res.GetComponent<BoxCollider2D>().bounds;
-				Debug.Log("resBounds.size.x: " + resBounds.size.x);
+//				Debug.Log("resBounds.size.x: " + resBounds.size.x);
 				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
 				globalGameScript.stones.Add(res);
 			} else {
 				res.SetActive(true);
 				resBounds = res.GetComponent<BoxCollider2D>().bounds;
-				Debug.Log("resBounds.size.x: " + resBounds.size.x);
+//				Debug.Log("resBounds.size.x: " + resBounds.size.x);
 				res.transform.position = new Vector3 (docksLocation.position.x + resBounds.size.x * xPosIndex, docksLocation.position.y + resBounds.size.y * yPosIndex, docksLocation.position.z);
 			}
 			stones.Add(res);// add to local King.cs list
@@ -500,7 +500,7 @@ public class King : MonoBehaviour {
 
 	public void RemoveAndPositionResource (int resourceType)
 	{
-		Debug.Log("Remove resource from island");
+//		Debug.Log("Remove resource from island");
 		if (resourceType == 0) {
 			if (foods.Count > 0) {
 				GameObject res = foods[foods.Count - 1];
@@ -514,12 +514,12 @@ public class King : MonoBehaviour {
 				res.SetActive(false);
 			}
 		} else if (resourceType == 2) {
-			Debug.Log("Remove resource type 2");
+//			Debug.Log("Remove resource type 2");
 			if (stones.Count > 0) {
-				Debug.Log("remove stone");
+//				Debug.Log("remove stone");
 				GameObject res = stones[stones.Count - 1];
 				stones.Remove(res);
-				Debug.Log("stone removed");
+//				Debug.Log("stone removed");
 				res.SetActive(false);
 			}
 		}else if (resourceType == 3){

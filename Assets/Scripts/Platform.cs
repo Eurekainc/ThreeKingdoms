@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NUnit.Framework;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class Platform : MonoBehaviour {
 
 	public King kingScript;
@@ -15,9 +17,12 @@ public class Platform : MonoBehaviour {
 	public float constructSectionTime = 2.0f;
     private float elapsedTime = 0.0f;
     private float[] journeyLength;
-	private Vector3[] partRotations;
+	public Vector3[] partPositions;// made public for debug purposes
+	public Quaternion[] partRotations;// made public for debug purposes
 
-
+	// Attacking enemies deconstruct structures
+	private int deconstructedModelSection;
+	public bool deconstruct = false;// made public for debug purposes
 
 
 	public bool docks = false;
@@ -32,6 +37,8 @@ public class Platform : MonoBehaviour {
 	// food, wood, stone, metal
 	public int[] cost = new int[4];
 
+	public int[] initialCost;
+
 	public bool underConstruction = false;
 
 	public int level = 0;
@@ -40,11 +47,19 @@ public class Platform : MonoBehaviour {
 	void Start ()
 	{
 		journeyLength = new float[models.Length];
-		partRotations = new Vector3[models.Length];
+		partRotations = new Quaternion[models.Length];
+		partPositions = new Vector3[models.Length];
+
 		for (int i = 0; i < models.Length; i++) {
-			journeyLength[i] = Vector3.Distance(models[i].transform.localPosition, transform.position);
-//			partRotations[i] = models[i].transform.localEulerAngles;
-//			Debug.Log("LocalEuler: " + models[i].transform.localEulerAngles);
+			journeyLength [i] = Vector3.Distance (models [i].transform.localPosition, transform.position);
+			partRotations [i] = models [i].transform.localRotation;
+			partPositions [i] = models [i].transform.localPosition;
+		}
+
+		// setup the initial cost
+		initialCost = new int[cost.Length];
+		for (int i = 0; i < cost.Length; i++) {
+			initialCost[i] = cost[i];
 		}
 	}
 	
@@ -52,7 +67,7 @@ public class Platform : MonoBehaviour {
 	void Update ()
 	{
 		if (constructing) {
-
+			Debug.Log ("CurrentModel Section......." + currentModelSection);
 			if (currentModelSection < models.Length) {
 				float fracJourney = elapsedTime / constructSectionTime;
 
@@ -69,9 +84,44 @@ public class Platform : MonoBehaviour {
 					elapsedTime = 0.0f;
 					constructing = false;
 					currentModelSection++;
+					// if constructed something, then its been un-deconstructed
+					if (deconstructedModelSection > 0) {
+						deconstructedModelSection--;
+					}
 				}
 			} else {
 				constructing = false;
+			}
+
+		}
+
+		// When being attacked
+		if (deconstruct) {
+			int deconstructIndex = (models.Length - 1) - deconstructedModelSection;
+			Debug.Log ("Deconstruct Model Section......." + deconstructIndex);
+			if (deconstructIndex > 0) {
+
+				float fracJourney = elapsedTime / constructSectionTime;
+
+				// local transform
+				models [deconstructIndex].transform.localPosition = Vector3.Lerp (models [deconstructIndex].transform.localPosition, partPositions [deconstructIndex], fracJourney);
+				// local rotation
+				models [deconstructIndex].transform.localRotation = Quaternion.Lerp (models [deconstructIndex].transform.localRotation, partRotations [deconstructIndex], fracJourney);
+
+				elapsedTime += Time.deltaTime;
+
+				if (fracJourney >= 0.85) {
+					models [deconstructIndex].transform.localPosition = partPositions [deconstructIndex];// just snap the structure part into place
+					models [deconstructIndex].transform.localRotation = partRotations [deconstructIndex];
+					elapsedTime = 0.0f;
+					deconstruct = false;
+					currentModelSection = deconstructIndex;// the model section to construct is now the same as the section that was just deconstructed
+					deconstructedModelSection++;
+					DamageStructure ();
+				}
+
+			} else {
+				deconstruct = false;
 			}
 
 		}
@@ -82,8 +132,48 @@ public class Platform : MonoBehaviour {
 		constructing = true;
 	}
 
+	public void DeConstructSection ()
+	{
+		deconstruct = true;
+	}
+
+	void DamageStructure ()
+	{
+		List<int> nonZeroIndices = new List<int> ();
+		for (int i = 0; i < initialCost.Length; i++) {
+			if (initialCost [i] > 0) {
+				nonZeroIndices.Add (i);
+			}
+		}
+		Debug.Log("nonZeroIndices: " + nonZeroIndices);
+		int randomIndex = nonZeroIndices[Random.Range (0, nonZeroIndices.Count)];// integer version of Random.Range excludes the end value, so doesn't need to be Count - 1
+		cost [randomIndex]++;
+
+		if (farming) {
+			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
+				kingScript.farmingPlatformsUnderConstruction.Add (this);
+			}
+		}else if (housing){
+			if (!kingScript.housingPlatformsUnderConstruction.Contains (this)) {
+				kingScript.housingPlatformsUnderConstruction.Add (this);
+			}
+		}else if (workshop){
+			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
+				kingScript.workshopPlatformsUnderConstruction.Add (this);
+			}
+		}else if (archery){
+			if (!kingScript.farmingPlatformsUnderConstruction.Contains (this)) {
+				kingScript.archeryPlatformsUnderConstruction.Add (this);
+			}
+		}
+
+		kingScript.UpdateNPCs ();// should tell builders to get building
+
+	}
+
 	public void ActivateStructure ()
 	{
+		currentModelSection = 0;// reset the model section
 		underConstruction = false;
 
 		if (completedModel != null) {

@@ -151,7 +151,7 @@ public class NPC : MonoBehaviour {
 			active = true;
 			GoToWorkPlatformPeasant ();
 		} else {
-			Debug.Log("No quarries to quarry... just idle about");
+			Debug.Log("NPC - Change occupation");
 			StartCoroutine(ChangePeasantOccupation());
 		}
 
@@ -216,8 +216,8 @@ public class NPC : MonoBehaviour {
 			}
 		}
 		// if there are no farms, but there are houses, then houses are the priority
-		else if (farmingPlatformsToBuild <= 0 && housingPlatformsToBuild > 0){
-			Debug.Log("SHOULD BUILD HOUSESSSSZZZZ   ...");
+		else if (farmingPlatformsToBuild <= 0 && housingPlatformsToBuild > 0) {
+			Debug.Log ("SHOULD BUILD HOUSESSSSZZZZ   ...");
 			// if there are houses to build, at least 1 farm and no built houses and not already building
 			if (housingPlatformsToBuild > 0 && builtHouses <= 0 && !haveTask) {
 				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.housingPlatformsUnderConstruction, kingScript.platformBuilder);
@@ -247,7 +247,7 @@ public class NPC : MonoBehaviour {
 		}
 		// TODO: figure out special building tasks, in what order they need to occur
 		// if there are no farms and no houses... then just take the first one in some order... 
-		else if (farmingPlatformsToBuild <= 0 && housingPlatformsToBuild <=0){
+		else if (farmingPlatformsToBuild <= 0 && housingPlatformsToBuild <= 0) {
 			// if there are workshops to build, and no built workshops and not already building
 			if (workshopPlatformsToBuild > 0 && builtWorkshops <= 0 && !haveTask) {
 				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.workshopPlatformsUnderConstruction, kingScript.platformBuilder);
@@ -267,6 +267,37 @@ public class NPC : MonoBehaviour {
 			}
 		}
 
+		// if the builder still doesn't have a task then assign the first task on one of the under construction lists
+		if (!haveTask) {
+			if (kingScript.farmingPlatformsUnderConstruction.Count > 0) {
+				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.farmingPlatformsUnderConstruction, kingScript.platformBuilder);
+				kingScript.AddNPCToPopulation (destinationPlatformScript, kingScript.platformBuilder);
+				active = true;
+				haveTask = true;
+				GoToDocksBuilder ();
+			} else if (kingScript.housingPlatformsUnderConstruction.Count > 0) {
+				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.housingPlatformsUnderConstruction, kingScript.platformBuilder);
+				kingScript.AddNPCToPopulation (destinationPlatformScript, kingScript.platformBuilder);
+				active = true;
+				haveTask = true;
+				GoToDocksBuilder ();
+			} else if (kingScript.workshopPlatformsUnderConstruction.Count > 0) {
+				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.workshopPlatformsUnderConstruction, kingScript.platformBuilder);
+				kingScript.AddNPCToPopulation (destinationPlatformScript, kingScript.platformBuilder);
+				active = true;
+				haveTask = true;
+				GoToDocksBuilder ();
+			} else if (kingScript.archeryPlatformsUnderConstruction.Count > 0) {
+				destinationPlatformScript = kingScript.FindPlatformWithLowestPopulation (kingScript.archeryPlatformsUnderConstruction, kingScript.platformBuilder);
+				kingScript.AddNPCToPopulation (destinationPlatformScript, kingScript.platformBuilder);
+				active = true;
+				haveTask = true;
+				GoToDocksBuilder ();
+			} else {
+				Debug.Log("NO platforms that need to be built or repaired.....");
+			}
+		}
+
 	}
 
 	// Archers
@@ -274,14 +305,14 @@ public class NPC : MonoBehaviour {
 	// this is public because its called from King.cs when an enemy is spotted ( King.cs AlertArchers() )
 	public void Patrol ()
 	{
-		Debug.Log("Patrol...");
+//		Debug.Log("Patrol...");
 		// choose a random platform and move there, once reached choose another platform... until needed for attack
 		int randomPlatformIndex = Random.Range (0, kingScript.platformScripts.Count);
 		destinationPlatformScript = kingScript.platformScripts [randomPlatformIndex];
 		patrolling = true;
 
 		if (kingScript.enemySighted) {
-			Debug.Log("Enemy sighted move to attack...");
+//			Debug.Log("Enemy sighted move to attack...");
 			StartCoroutine(AttackPosition());
 		} else {
 			GoToPatrolPlatformArcher ();
@@ -296,14 +327,14 @@ public class NPC : MonoBehaviour {
 			attackPosition = hit.position;
 		}
 
-		Debug.Log("attackPosition: " + attackPosition);
+//		Debug.Log("attackPosition: " + attackPosition);
 
 		GoToAttackPositionArcher ();
 	}
 	IEnumerator FireProjectile ()
 	{
 		yield return new WaitForSeconds(reloadTime);
-		Debug.Log("Fire!!!!");
+//		Debug.Log("Fire!!!!");
 		GameObject projectile = (GameObject)Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 		Projectile projectileScript = projectile.GetComponent<Projectile>();
 		projectileScript.endPoint = kingScript.enemyTransform.position;
@@ -353,14 +384,14 @@ public class NPC : MonoBehaviour {
 			agent.SetDestination (destinationPlatformScript.transform.position);
 			movingToPlatform = true;
 		} else {
-			Debug.Log ("No destination platform... Idle... maybe change occupation?????");
+//			Debug.Log ("No destination platform... Idle... maybe change occupation?????");
 			StartCoroutine(ChangePeasantOccupation());
 		}
 	}
 
 	IEnumerator ChangePeasantOccupation(){
 		yield return new WaitForSeconds(2.0f);// arbitrary wait time, just to prevent a super speed loop
-		Debug.Log("Change peasant occupation.... maybe try to cap this, then idle");
+//		Debug.Log("Change peasant occupation.... maybe try to cap this, then idle");
 		occupation++;
 		if (occupation > 2) {
 			occupation = 0;
@@ -372,15 +403,15 @@ public class NPC : MonoBehaviour {
 	{
 		Debug.Log ("resourceIndex: " + resourceIndex);
 		if (resourceIndex == 0) {
-			Debug.Log("Go to food store");
+//			Debug.Log("Go to food store");
 			agent.SetDestination (kingScript.foodResourceStore.position);
 //			agent.SetDestination (kingScript.docks.transform.position);
 		}else if (resourceIndex == 1) {
-			Debug.Log("Go to wood store");
+//			Debug.Log("Go to wood store");
 			agent.SetDestination (kingScript.woodResourceStore.position);
 //			agent.SetDestination (kingScript.docks.transform.position);
 		}else if (resourceIndex == 2) {
-			Debug.Log("Go to stone store");
+//			Debug.Log("Go to stone store");
 			agent.SetDestination (kingScript.stoneResourceStore.position);
 //			agent.SetDestination (kingScript.docks.transform.position);
 		}else {
@@ -459,7 +490,7 @@ public class NPC : MonoBehaviour {
 	{
 
 		if (goingToFerry) {
-			Debug.Log ("Arrived at ferry");
+//			Debug.Log ("Arrived at ferry");
 			kingScript.npcsWaitingForFerry.Add (this);
 			goingToFerry = false;
 			waitingForFerry = true;
@@ -535,7 +566,7 @@ public class NPC : MonoBehaviour {
 	// this tells NPC to go to be picked up by the boat
 	public void GoToFerry ()
 	{
-		Debug.Log("Going to ferry");
+//		Debug.Log("Going to ferry");
 		agent.SetDestination (kingScript.ferryPickUp.position);
 		goingToFerry = true;
 		movingToPlatform = true;
@@ -561,7 +592,7 @@ public class NPC : MonoBehaviour {
 		agent.Warp(newPosition);
 		kingScript = newKingScript;
 		kingScript.npcs.Add(gameObject);
-		Debug.Log("Should update NPCs and set tasks........");
+//		Debug.Log("Should update NPCs and set tasks........");
 		kingScript.UpdateNPCs ();
 
 	}

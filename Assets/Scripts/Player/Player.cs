@@ -50,23 +50,23 @@ public class Player : MonoBehaviour {
 
 		if (Input.GetKeyDown ("down")) {
 			if (currentInventory < maxInventory) {
-				Debug.Log ("Pick up NPC or resource");
+//				Debug.Log ("Pick up NPC or resource");
 				// picking up resource takes priority over NPC, because itherwise may interrupt NPC from doing work
 				if (canLoadFood && currentKingScript.availableResources[0] > 0){
-					Debug.Log("Pick up FOOD");
+//					Debug.Log("Pick up FOOD");
 					inventoryResources[0]++;
 					currentKingScript.availableResources[0]--;
 					currentKingScript.RemoveAndPositionResource (0);
 					currentInventory++;
 				}
 				else if (canLoadWood && currentKingScript.availableResources[1] > 0){
-					Debug.Log("Pick up WOOD");
+//					Debug.Log("Pick up WOOD");
 					inventoryResources[1]++;
 					currentKingScript.availableResources[1]--;
 					currentKingScript.RemoveAndPositionResource (1);
 					currentInventory++;
 				}else if (canLoadStone && currentKingScript.availableResources[2] > 0){
-					Debug.Log("Pick up STONE");
+//					Debug.Log("Pick up STONE");
 					inventoryResources[2]++;
 					currentKingScript.availableResources[2]--;
 					currentKingScript.RemoveAndPositionResource (2);
@@ -85,20 +85,20 @@ public class Player : MonoBehaviour {
 
 		if (Input.GetKeyDown ("up")) {
 			if (canLoadFood && inventoryResources[0] > 0){
-				Debug.Log("Drop off FOOD");
+//				Debug.Log("Drop off FOOD");
 				inventoryResources[0]--;
 				currentKingScript.availableResources[0]++;
 				currentKingScript.CreateAndPositionResource (0);
 				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
 			}
 			else if (canLoadWood && inventoryResources[1] > 0){
-				Debug.Log("Drop off WOOD");
+//				Debug.Log("Drop off WOOD");
 				inventoryResources[1]--;
 				currentKingScript.availableResources[1]++;
 				currentKingScript.CreateAndPositionResource (1);
 				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
 			}else if (canLoadStone && inventoryResources[2] > 0){
-				Debug.Log("Drop off STONE");
+//				Debug.Log("Drop off STONE");
 				inventoryResources[2]--;
 				currentKingScript.availableResources[2]++;
 				currentKingScript.CreateAndPositionResource (2);

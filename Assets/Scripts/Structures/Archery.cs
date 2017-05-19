@@ -19,24 +19,31 @@ public class Archery : MonoBehaviour {
 
 	public void Activate ()
 	{
-		switch (platformScript.level){
-			case 0:
-				kingScript.workshops++;
-				platformScript.level++;
-				// cost to upgrade to keep
-				platformScript.cost[0] = 10;// need 3 food to create 3 peasants
-				platformScript.cost[1] = 15;
-				platformScript.cost[2] = 5;
-				platformScript.cost[3] = 0;
 
-				// simplification once a house is built it just spawns peasants
-				CreateArchers ();
+		// without taking levels into account
+		kingScript.houses++;
+		platformScript.level++;
+		CreateArchers ();
 
-				break;
-			default:
-				Debug.Log("Fall through House.cs in Activate");
-				break;
-		}
+		// with taking levels into account
+//		switch (platformScript.level){
+//			case 0:
+//				kingScript.workshops++;
+//				platformScript.level++;
+//				// cost to upgrade to keep
+//				platformScript.cost[0] = 10;// need 3 food to create 3 peasants
+//				platformScript.cost[1] = 15;
+//				platformScript.cost[2] = 5;
+//				platformScript.cost[3] = 0;
+//
+//				// simplification once a house is built it just spawns peasants
+//				CreateArchers ();
+//
+//				break;
+//			default:
+//				Debug.Log("Fall through House.cs in Activate");
+//				break;
+//		}
 	}
 
 	public void CreateArchers ()
