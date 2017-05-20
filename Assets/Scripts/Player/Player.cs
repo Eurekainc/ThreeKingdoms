@@ -87,6 +87,7 @@ public class Player : MonoBehaviour {
 			if (canLoadFood && inventoryResources[0] > 0){
 //				Debug.Log("Drop off FOOD");
 				inventoryResources[0]--;
+				currentInventory--;
 				currentKingScript.availableResources[0]++;
 				currentKingScript.CreateAndPositionResource (0);
 				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
@@ -94,12 +95,14 @@ public class Player : MonoBehaviour {
 			else if (canLoadWood && inventoryResources[1] > 0){
 //				Debug.Log("Drop off WOOD");
 				inventoryResources[1]--;
+				currentInventory--;
 				currentKingScript.availableResources[1]++;
 				currentKingScript.CreateAndPositionResource (1);
 				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue
 			}else if (canLoadStone && inventoryResources[2] > 0){
 //				Debug.Log("Drop off STONE");
 				inventoryResources[2]--;
+				currentInventory--;
 				currentKingScript.availableResources[2]++;
 				currentKingScript.CreateAndPositionResource (2);
 				currentKingScript.CheckResourceArrived ();// activate builder at front of queue to check and see if his resource has arrived, if not then go to the back of the queue

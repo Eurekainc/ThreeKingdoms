@@ -1,18 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Dragon.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Platform.cs">
     <Files>
-      <File FileName="Assets/Scripts/King.cs" Line="271" Column="36" />
-      <File FileName="Assets/Scripts/GlobalGameScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/NPC.cs" Line="219" Column="73" />
-      <File FileName="Assets/Scripts/Player/Player.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player/ResourceSensor.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Dragon.cs" Line="6" Column="38" />
+      <File FileName="Assets/Scripts/King.cs" Line="183" Column="33" />
+      <File FileName="Assets/Scripts/GlobalGameScript.cs" Line="8" Column="27" />
+      <File FileName="Assets/Scripts/NPC.cs" Line="71" Column="32" />
+      <File FileName="Assets/Scripts/Player/Player.cs" Line="114" Column="5" />
+      <File FileName="Assets/Scripts/Player/ResourceSensor.cs" Line="40" Column="6" />
       <File FileName="Assets/Scripts/Projectile.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Platform.cs" Line="97" Column="54" />
-      <File FileName="Assets/Scripts/Structures/House.cs" Line="17" Column="42" />
-      <File FileName="Assets/Scripts/Structures/Archery.cs" Line="22" Column="33" />
-      <File FileName="Assets/Scripts/Dragon.cs" Line="30" Column="35" />
+      <File FileName="Assets/Scripts/Platform.cs" Line="201" Column="22" />
+      <File FileName="Assets/Scripts/Structures/House.cs" Line="74" Column="4" />
+      <File FileName="Assets/Scripts/Structures/Archery.cs" Line="52" Column="21" />
       <File FileName="Assets/Scripts/Enemy.cs" Line="22" Column="3" />
+      <File FileName="Assets/Scripts/Structures/Workshop.cs" Line="51" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

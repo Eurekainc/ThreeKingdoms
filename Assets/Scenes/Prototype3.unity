@@ -723,6 +723,7 @@ MonoBehaviour:
   initialCost: 
   underConstruction: 0
   level: 0
+  residentNPCs: []
 --- !u!1001 &238807048
 Prefab:
   m_ObjectHideFlags: 0
@@ -1011,6 +1012,10 @@ Prefab:
       propertyPath: kingScript
       value: 
       objectReference: {fileID: 1720475454}
+    - target: {fileID: 1952365844393982, guid: e752f73f9e65940ee9ff7a5d52202c4d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e752f73f9e65940ee9ff7a5d52202c4d, type: 2}
   m_IsPrefabParent: 0
@@ -1259,6 +1264,52 @@ Transform:
   m_Father: {fileID: 1236466188}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &419935889
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 226.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.00000013315805
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+      propertyPath: m_Name
+      value: FarmIsland
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a6fb0f89ddc16437594261ec9335b337, type: 3}
+  m_IsPrefabParent: 0
 --- !u!1 &436048394 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1731091810647596, guid: 15bbdeb6be1ba46a4af741c0a1f11165,
@@ -2381,6 +2432,7 @@ MonoBehaviour:
   initialCost: 
   underConstruction: 0
   level: 0
+  residentNPCs: []
 --- !u!1001 &1226115321
 Prefab:
   m_ObjectHideFlags: 0
@@ -2534,6 +2586,9 @@ MonoBehaviour:
   platformsUnderConstruction: []
   peasantTasks: []
   builderTasks: []
+  slowSpeed: 1
+  mediumSpeed: 3
+  fastSpeed: 10
   enemySighted: 0
   enemyTransform: {fileID: 0}
   canLoadFood: 0
@@ -2775,6 +2830,9 @@ MonoBehaviour:
   platformsUnderConstruction: []
   peasantTasks: []
   builderTasks: []
+  slowSpeed: 1
+  mediumSpeed: 3
+  fastSpeed: 10
   enemySighted: 0
   enemyTransform: {fileID: 0}
   canLoadFood: 0
@@ -3291,6 +3349,7 @@ MonoBehaviour:
   initialCost: 
   underConstruction: 0
   level: 0
+  residentNPCs: []
 --- !u!4 &1650560568
 Transform:
   m_ObjectHideFlags: 0
@@ -3786,6 +3845,9 @@ MonoBehaviour:
   platformsUnderConstruction: []
   peasantTasks: []
   builderTasks: []
+  slowSpeed: 1
+  mediumSpeed: 3
+  fastSpeed: 10
   enemySighted: 0
   enemyTransform: {fileID: 0}
   canLoadFood: 0

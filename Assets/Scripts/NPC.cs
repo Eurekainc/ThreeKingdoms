@@ -71,22 +71,34 @@ public class NPC : MonoBehaviour {
 		agent.speed = kingScript.fastSpeed;
 	}
 
-	public void FindTask(){
-		destinationPlatformScript = null;
-		if (occupation == 0) {
+	public void FindTask ()
+	{
+		if (!carryingResource) {
+			destinationPlatformScript = null;
+			if (occupation == 0) {
 //			FindTaskPeasant ();
-			FindForrest();
-		}else if (occupation == 1) {
-			FindQuarry();
-		}else if (occupation == 2) {
-			FindFarm();
-		}else if (occupation == 3) {
+				FindForrest ();
+			} else if (occupation == 1) {
+				FindQuarry ();
+			} else if (occupation == 2) {
+				FindFarm ();
+			} else if (occupation == 3) {
 //			FindTaskBuilder ();
-			FindBuildTask();
-		}else if (occupation == 4) {
-			Patrol();
-		} else if (occupation == 5) {
-			Parade();
+				FindBuildTask ();
+			} else if (occupation == 4) {
+				Patrol ();
+			} else if (occupation == 5) {
+				Parade ();
+			}
+		} else {
+			if (occupation == 0 || occupation == 1 || occupation == 2) {
+				destinationPlatformScript = null;
+				GoToDocksPeasant (carriedResourceIndex);
+			} else {
+				if (occupation == 3) {
+					GoToWorkPlatformBuilder ();
+				}
+			}
 		}
 	}
 
