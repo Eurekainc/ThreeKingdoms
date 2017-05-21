@@ -37,7 +37,7 @@ Shader "Custom/Emile/InvertSilhouette" {
 			struct v2f{
 				float4 position: SV_POSITION;
 				float2 uv : TEXCOORD0;
-			}
+			};
 
 			// builds the object
 			v2f vertexFunction(appdata IN){

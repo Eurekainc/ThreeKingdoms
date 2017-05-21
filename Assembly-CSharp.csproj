@@ -235,6 +235,7 @@
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Advanced Blend\Vertex Color RGB Advanced Blend.shader" />
      <None Include="Assets\Anima2D\Readme.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ColorGrading.cginc" />
+     <None Include="Assets\Shaders\GrabPassInvert.shader" />
      <None Include="Assets\Shaders\InvertSilhouette.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.cginc" />
      <None Include="Assets\Shaders\ToonLit2.shader" />

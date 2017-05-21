@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: InvertSilhouette
-  m_Shader: {fileID: 4800000, guid: ff906dae3f6f847edab7d146a5cd3594, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6a68da7e1579a4085bed1761c07003d7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -38,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 206057d81168a9c40b1c273c1334e6c5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -65,6 +65,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _InvertScale: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -73,7 +74,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _WaveScale: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BGColor: {r: 0.16745336, g: 0.11840397, b: 0.53676474, a: 0}
+    - _Color: {r: 0.106779836, g: 0.5808823, b: 0.3454659, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
