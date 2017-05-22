@@ -46,6 +46,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\2DLightAsset\Scripts\2DLight\Editor\DynamicLightEditor.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\2DLight\Editor\DynamicLightMenu.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\2DLight\Editor\EditorUtils.cs" />
      <Compile Include="Assets\Anima2D\Scripts\Editor\AnimationBaker.cs" />
      <Compile Include="Assets\Anima2D\Scripts\Editor\AnimationFixer\AnimationFixer.cs" />
      <Compile Include="Assets\Anima2D\Scripts\Editor\AnimationWindowExtra\AnimationWindowExtra.cs" />
@@ -248,12 +251,14 @@
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Mobile.shader" />
      <None Include="Assets\Shaders\VertexWindGrass.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGBA Blend\Vertex Color RGBA Blend.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\Gradient-NoTexture-Radial-SingleColor-ToTransparent-RegularUV-AlphaBlend.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Unlit\Planar Blend\Vertex Color Planar Blend.shader" />
      <None Include="Assets\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGBA Blend\Vertex Color RGBA Blend Mobile.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Ikari Vertex Painter Changelog.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ACES.cginc" />
+     <None Include="Assets\2DLightAsset\Shaders\VertexColor.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
      <None Include="Assets\Anima2D\Version.txt" />
@@ -270,6 +275,7 @@
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Others\Text Unlit.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Advanced\Vertex Water Blend.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\NoTexture.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
      <None Include="Assets\PostProcessing\Resources\Bluenoise64\LICENSE.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\BuiltinDebugViews.shader" />
@@ -302,6 +308,7 @@
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceRaytrace.cginc" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Hard.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\Gradient-ZFighting.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.shader" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeRender.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.shader" />
@@ -315,6 +322,9 @@
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\Fake AO\Vertex Color Fake AO.shader" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Lerp\Vertex Color RGB Lerp Normal Mobile.shader" />
+ <Reference Include="Assembly-UnityScript">
+ <HintPath>/Users/emile/Desktop/unity_projects/ThreeKingdoms/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>

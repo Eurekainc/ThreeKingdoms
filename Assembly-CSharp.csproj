@@ -46,6 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\2DLightAsset\Examples\RigidBodyInterpolationSolution\FollowLight2d.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\2DLight\DynamicLight.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\Helpers\TablaSenoCoseno.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch2.cs" />
+     <Compile Include="Assets\2DLightAsset\Scripts\rotate.cs" />
      <Compile Include="Assets\Anima2D\Examples\Scripts\CharacterMotion.cs" />
      <Compile Include="Assets\Anima2D\Examples\Scripts\Follow.cs" />
      <Compile Include="Assets\Anima2D\Examples\Scripts\SkinnedMeshCombiner.cs" />
@@ -122,6 +128,7 @@
      <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
      <Compile Include="Assets\Scripts\Boat.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\ChannelBuilder.cs" />
      <Compile Include="Assets\Scripts\Dragon.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\GlobalGameScript.cs" />
@@ -175,12 +182,14 @@
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGB Blend\Vertex Color RGB Blend Mobile.shader" />
      <None Include="Assets\Shaders\VertexWindGrass.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGBA Blend\Vertex Color RGBA Blend.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\Gradient-NoTexture-Radial-SingleColor-ToTransparent-RegularUV-AlphaBlend.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Unlit\Planar Blend\Vertex Color Planar Blend.shader" />
      <None Include="Assets\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Mobile\Diffuse\RGBA Blend\Vertex Color RGBA Blend Mobile.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Ikari Vertex Painter Changelog.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ACES.cginc" />
+     <None Include="Assets\2DLightAsset\Shaders\VertexColor.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
      <None Include="Assets\Anima2D\Version.txt" />
@@ -197,6 +206,7 @@
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Others\Text Unlit.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Advanced\Vertex Water Blend.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\NoTexture.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
      <None Include="Assets\PostProcessing\Resources\Bluenoise64\LICENSE.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\BuiltinDebugViews.shader" />
@@ -229,6 +239,7 @@
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceRaytrace.cginc" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Blend\Vertex Color RGB Hard.shader" />
      <None Include="Assets\Ikari\Vertex Painter\Examples\Assets\Shaders\Diffuse\RGB Lerp\Vertex Color RGB Lerp.shader" />
+     <None Include="Assets\2DLightAsset\Shaders\Gradient-ZFighting.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Bloom.shader" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\VectorscopeRender.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\EyeAdaptation.shader" />
