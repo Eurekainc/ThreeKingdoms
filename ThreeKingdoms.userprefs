@@ -1,12 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Shaders/GrabPassInvert.shader">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ChannelGame/ChannelBuilder.cs">
     <Files>
-      <File FileName="Assets/Scripts/King.cs" Line="294" Column="25" />
-      <File FileName="Assets/Shaders/InvertSilhouette.shader" Line="61" Column="10" />
+      <File FileName="Assets/2DLightAsset/Shaders/VertexColor.shader" Line="25" Column="38" />
+      <File FileName="Assets/Scripts/King.cs" Line="1" Column="1" />
+      <File FileName="Assets/Shaders/InvertSilhouette.shader" Line="33" Column="20" />
       <File FileName="Assets/Shaders/GrabPassInvert.shader" Line="59" Column="67" />
-      <File FileName="Assets/Shaders/ToonCutoff1.shader" Line="24" Column="1" />
+      <File FileName="Assets/Shaders/ToonCutoff1.shader" Line="1" Column="1" />
       <File FileName="Assets/Shaders/VertexWindGrass.shader" Line="1" Column="1" />
+      <File FileName="Assets/2DLightAsset/Scripts/2DLight/DynamicLight.cs" Line="113" Column="1" />
+      <File FileName="Assets/Scripts/ChannelGame/ChannelBuilder.cs" Line="71" Column="76" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

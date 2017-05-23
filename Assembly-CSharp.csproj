@@ -129,6 +129,9 @@
      <Compile Include="Assets\Scripts\Boat.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\ChannelBuilder.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\ChannelsMaster.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Ground.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\WaterSource.cs" />
      <Compile Include="Assets\Scripts\Dragon.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\GlobalGameScript.cs" />
