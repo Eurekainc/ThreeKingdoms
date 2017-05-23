@@ -78,13 +78,13 @@ public class Ground : MonoBehaviour {
 
 	public void InFlow(float inFlow){
 
-		Debug.Log("Platform filling at rate: " + inFlow);
+//		Debug.Log("Platform filling at rate: " + inFlow);
 		currentFlowRateIn += inFlow;
 
 	}
 	public void OutFlow(float outFlow){
 
-		Debug.Log("Platform draining at rate: " + outFlow);
+//		Debug.Log("Platform draining at rate: " + outFlow);
 		currentFlowRateOut += outFlow;
 
 	}
@@ -100,50 +100,75 @@ public class Ground : MonoBehaviour {
 	public void CheckForOverflow ()
 	{
 		Transform waterTransform = waterLevel.transform;
+		float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
+
+		// if the next platform's water level is lower
 		if (groundIndex + 1 < masterScript.groundBounds.Count) {
-
-			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
-
-			if (currentWaterLevel >= masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
-				Debug.Log ("Can Overflow to NEXT platform");
-				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex + 1]);
-				masterScript.groundScripts [groundIndex + 1].waterSource = waterSource;
-
-
-
-				if (currentWaterLevel > masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
-					currentFlowRateOut = currentFlowRateIn;
-					overflowingForward = true;
-				} else {
-					currentFlowRateOut = 0.0f;
-					overflowingForward = false;
+			if (currentWaterLevel > masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
+				if (!waterSource.SharedWaterLevel(this, masterScript.groundScripts [groundIndex + 1])){
+					Debug.Log("----!!!!!!!-------Can overflow NEXT " + groundIndex);
+					waterSource.SetFillingOrder();// tell the WaterSource.cs to recalculate which platforms to fill
 				}
-
 			}
-		} else {
-//			Debug.Log ("Can't overflow to next platform... so just fill up for now... should drain into the sea");
 		}
 
+		// if the previous platform's water level is lower
 		if (groundIndex - 1 > 0) {
-			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
-
-			if (currentWaterLevel >= masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
-				Debug.Log ("Can Overflow to Previous platform");
-				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex - 1]);
-				masterScript.groundScripts [groundIndex - 1].waterSource = waterSource;
-
-				if (currentWaterLevel > masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
-					currentFlowRateOut = currentFlowRateIn;
-					overflowingBack = true;
-				} else {
-					currentFlowRateOut = 0.0f;
-					overflowingBack = false;
+			if (currentWaterLevel > masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
+//				Debug.Log("----------Can overflow PREV " + groundIndex);
+//				waterSource.SetFillingOrder();// tell the WaterSource.cs to recalculate which platforms to fill
+				if (!waterSource.SharedWaterLevel(this, masterScript.groundScripts [groundIndex - 1])){
+					Debug.Log("----!!!!!!!-------Can overflow PREV " + groundIndex);
+					waterSource.SetFillingOrder();// tell the WaterSource.cs to recalculate which platforms to fill
 				}
-
 			}
-		} else {
-//			Debug.Log("Can't overflow to previous platform... so just fill up for now... should stop filling when max level is reached");
 		}
+
+
+//		if (groundIndex + 1 < masterScript.groundBounds.Count) {
+//
+//			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
+//
+//			if (currentWaterLevel >= masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
+//				Debug.Log ("Can Overflow to NEXT platform");
+//				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex + 1]);
+//				masterScript.groundScripts [groundIndex + 1].waterSource = waterSource;
+//
+//
+//
+//				if (currentWaterLevel > masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
+//					currentFlowRateOut = currentFlowRateIn;
+//					overflowingForward = true;
+//				} else {
+//					currentFlowRateOut = 0.0f;
+//					overflowingForward = false;
+//				}
+//
+//			}
+//		} else {
+////			Debug.Log ("Can't overflow to next platform... so just fill up for now... should drain into the sea");
+//		}
+//
+//		if (groundIndex - 1 > 0) {
+//			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
+//
+//			if (currentWaterLevel >= masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
+//				Debug.Log ("Can Overflow to Previous platform");
+//				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex - 1]);
+//				masterScript.groundScripts [groundIndex - 1].waterSource = waterSource;
+//
+//				if (currentWaterLevel > masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
+//					currentFlowRateOut = currentFlowRateIn;
+//					overflowingBack = true;
+//				} else {
+//					currentFlowRateOut = 0.0f;
+//					overflowingBack = false;
+//				}
+//
+//			}
+//		} else {
+////			Debug.Log("Can't overflow to previous platform... so just fill up for now... should stop filling when max level is reached");
+//		}
 	}
 
 
