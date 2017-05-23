@@ -7,7 +7,7 @@ public class ChannelsMaster : MonoBehaviour {
 
 	public List<Ground> groundScripts = new List<Ground>();
 	public List<Bounds> groundBounds = new List<Bounds>();
-	public List<WaterSource> waterSourceScripts = new List<WaterSource>();
+//	public List<WaterSource> waterSourceScripts = new List<WaterSource>();
 
 	// Use this for initialization
 	void Start ()
@@ -23,25 +23,25 @@ public class ChannelsMaster : MonoBehaviour {
 		
 	}
 
-	public void OpenChannel(WaterSource waterSourceScript){
-
-		int channelIndex = waterSourceScripts.IndexOf(waterSourceScript);
-		WaterSource ws = waterSourceScripts[channelIndex];
-		Ground g = groundScripts[channelIndex + 1];
-
-		g.FillPlatform(ws.flowRate);
-
-	}
-
-	public void CloseChannel(WaterSource waterSourceScript){
-
-		int channelIndex = waterSourceScripts.IndexOf(waterSourceScript);
-		WaterSource ws = waterSourceScripts[channelIndex];
-		Ground g = groundScripts[channelIndex + 1];
-
-		g.StopFillPlatform();
-
-	}
+//	public void OpenChannel(WaterSource waterSourceScript){
+//
+//		int channelIndex = waterSourceScripts.IndexOf(waterSourceScript);
+//		WaterSource ws = waterSourceScripts[channelIndex];
+//		Ground g = groundScripts[channelIndex + 1];
+//
+//		g.InFlow(ws.flowRate);
+//
+//	}
+//
+//	public void CloseChannel(WaterSource waterSourceScript){
+//
+//		int channelIndex = waterSourceScripts.IndexOf(waterSourceScript);
+//		WaterSource ws = waterSourceScripts[channelIndex];
+//		Ground g = groundScripts[channelIndex + 1];
+//
+//		g.StopFillPlatform();
+//
+//	}
 
 	public Bounds GetNextGroundBounds (int groundIndex)
 	{
