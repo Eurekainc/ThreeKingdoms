@@ -7,7 +7,10 @@ public class WaterSource : MonoBehaviour {
 
 	public ChannelsMaster masterScript;
 
+	public ParticleSystem waterParticles;
+
 	public LayerMask groundLayer;
+	public LayerMask channelLayer;
 
 	public Bounds myBounds;
 
@@ -38,24 +41,32 @@ public class WaterSource : MonoBehaviour {
 	void Update ()
 	{
 		if (openChannel) {
-//			masterScript.OpenChannel(this);
+			waterParticles.Play();
 			WaterfallHit ();
 			openChannel = false;
 		}
 		if (closeChannel) {
-//			masterScript.CloseChannel(this);
+			waterParticles.Stop();
+			StopFilling();
 			closeChannel = false;
 		}
 
 	}
 
+	void StopFilling ()
+	{
+		for (int i = 0; i < fillingPlatforms.Count; i++) {
+			fillingPlatforms[i].currentFlowRateIn -= (flowRate/fillingPlatforms.Count);
+		}
+		fillingPlatforms.Clear();
+		levelsToFillLeft.Clear();
+		levelsToFillRight.Clear();
+	}
+
 	void WaterfallHit(){
 		RaycastHit2D hit = Physics2D.Raycast(new Vector3(myBounds.max.x, myBounds.min.y, transform.position.z), -Vector2.up, Mathf.Infinity, groundLayer);
 		if (hit.collider != null) {
-//            Debug.Log("Hit the ground object: " + hit.collider.gameObject.name);
 			Ground groundScript = hit.collider.gameObject.GetComponent<Ground>();
-//			groundScript.waterSource = this;
-//			fillingPlatforms.Add(groundScript);
 			groundOrigin = groundScript;// test
 			SetFillingOrder();
         }
@@ -201,15 +212,5 @@ public class WaterSource : MonoBehaviour {
 			fillingPlatforms[i].InFlow(flowRate/fillingPlatforms.Count);
 		}
 	}
-
-//	public void AddFillingPlatform (Ground fillingPlatform)
-//	{
-//		Debug.Log ("Adding a filling platform");
-//		if (!fillingPlatforms.Contains (fillingPlatform)) {
-//			ResetFilledPlatforms();// first reset the currently filled platforms, by removing the previously calculated flowrate in
-//			fillingPlatforms.Add(fillingPlatform);// add a new platform... then
-//			UpdateFilledPlatforms();// add the newly calculated flowrate in.
-//		}
-//	}
 
 }

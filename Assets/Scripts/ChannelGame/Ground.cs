@@ -26,7 +26,6 @@ public class Ground : MonoBehaviour {
 
 	public int groundIndex;
 
-	// Use this for initialization
 	void Start () {
 
 		if (masterScript == null) {
@@ -35,8 +34,7 @@ public class Ground : MonoBehaviour {
 
 		waterLevelBounds = waterLevel.GetComponent<BoxCollider2D>().bounds;
 	}
-	
-	// Update is called once per frame
+
 	void Update ()
 	{
 
@@ -77,23 +75,11 @@ public class Ground : MonoBehaviour {
 	}
 
 	public void InFlow(float inFlow){
-
-//		Debug.Log("Platform filling at rate: " + inFlow);
 		currentFlowRateIn += inFlow;
 
 	}
 	public void OutFlow(float outFlow){
-
-//		Debug.Log("Platform draining at rate: " + outFlow);
 		currentFlowRateOut += outFlow;
-
-	}
-
-	public void StopFillPlatform(){
-
-		Debug.Log("Stop Platform filling");
-		filling = false;
-		currentFlowRateIn = 0.0f;
 
 	}
 
@@ -115,60 +101,12 @@ public class Ground : MonoBehaviour {
 		// if the previous platform's water level is lower
 		if (groundIndex - 1 > 0) {
 			if (currentWaterLevel > masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
-//				Debug.Log("----------Can overflow PREV " + groundIndex);
-//				waterSource.SetFillingOrder();// tell the WaterSource.cs to recalculate which platforms to fill
 				if (!waterSource.SharedWaterLevel(this, masterScript.groundScripts [groundIndex - 1])){
 					Debug.Log("----!!!!!!!-------Can overflow PREV " + groundIndex);
 					waterSource.SetFillingOrder();// tell the WaterSource.cs to recalculate which platforms to fill
 				}
 			}
 		}
-
-
-//		if (groundIndex + 1 < masterScript.groundBounds.Count) {
-//
-//			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
-//
-//			if (currentWaterLevel >= masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
-//				Debug.Log ("Can Overflow to NEXT platform");
-//				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex + 1]);
-//				masterScript.groundScripts [groundIndex + 1].waterSource = waterSource;
-//
-//
-//
-//				if (currentWaterLevel > masterScript.groundScripts [groundIndex + 1].waterLevelBounds.max.y) {
-//					currentFlowRateOut = currentFlowRateIn;
-//					overflowingForward = true;
-//				} else {
-//					currentFlowRateOut = 0.0f;
-//					overflowingForward = false;
-//				}
-//
-//			}
-//		} else {
-////			Debug.Log ("Can't overflow to next platform... so just fill up for now... should drain into the sea");
-//		}
-//
-//		if (groundIndex - 1 > 0) {
-//			float currentWaterLevel = waterTransform.position.y + waterLevelBounds.extents.y;
-//
-//			if (currentWaterLevel >= masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
-//				Debug.Log ("Can Overflow to Previous platform");
-//				waterSource.AddFillingPlatform (masterScript.groundScripts [groundIndex - 1]);
-//				masterScript.groundScripts [groundIndex - 1].waterSource = waterSource;
-//
-//				if (currentWaterLevel > masterScript.groundScripts [groundIndex - 1].waterLevelBounds.max.y) {
-//					currentFlowRateOut = currentFlowRateIn;
-//					overflowingBack = true;
-//				} else {
-//					currentFlowRateOut = 0.0f;
-//					overflowingBack = false;
-//				}
-//
-//			}
-//		} else {
-////			Debug.Log("Can't overflow to previous platform... so just fill up for now... should stop filling when max level is reached");
-//		}
 	}
 
 
@@ -184,28 +122,9 @@ public class Ground : MonoBehaviour {
 		waterTransform.position = new Vector3(waterTransform.position.x, waterTransform.position.y + flowRate, waterTransform.position.z);
 
 		if ((waterTransform.position.y + waterLevelBounds.extents.y) <= masterScript.groundBounds[groundIndex].max.y) {
-			StopFillPlatform();
+			Debug.Log("Stop draining the platform... its empty");
 		}
 
-	}
-
-	void OverflowForward (int overflowToIndex)
-	{
-		Debug.Log ("Overflow forward..... " + overflowToIndex);
-		float overflowFactor = 0.5f;
-		if (overflowingBack) {
-			overflowFactor = 1/3;
-		}
-		overflowingForward = true;
-		currentFlowRateOut = flowRate * (1 - overflowFactor);
-		masterScript.groundScripts[overflowToIndex].InFlow(flowRate * overflowFactor);
-	}
-	void OverflowBack(int overflowToIndex){
-		Debug.Log("Overflow back..... " + overflowToIndex);
-		overflowingBack = true;
-		currentFlowRateOut = currentFlowRateIn;
-		masterScript.groundScripts[overflowToIndex].InFlow(flowRate);
-		masterScript.groundScripts[overflowToIndex].currentFlowRateOut = 0.0f;// no longer draining into the next platform
 	}
 
 }
