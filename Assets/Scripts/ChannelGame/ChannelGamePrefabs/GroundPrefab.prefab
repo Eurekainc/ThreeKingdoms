@@ -216,6 +216,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterScript: {fileID: 0}
+  myBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   waterSource: {fileID: 0}
   waterLevel: {fileID: 1469279867040934}
   waterLevelBounds:
@@ -230,6 +233,7 @@ MonoBehaviour:
   fillingRate: 0
   overflowingForward: 0
   overflowingBack: 0
+  structures: []
   groundIndex: 0
 --- !u!253 &253080654990429030
 BuoyancyEffector2D:

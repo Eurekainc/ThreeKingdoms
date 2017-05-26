@@ -8,6 +8,7 @@ public class ChannelBuilder : MonoBehaviour {
 	public GameObject channel;
 
 	public bool build;
+	public float buildRate = 0.01f;
 
 	public bool attachChannel;
 
@@ -39,7 +40,12 @@ public class ChannelBuilder : MonoBehaviour {
 
 	void IncreaseStrutHeight(int strutIndex){
 		Transform strutTransform = struts[strutIndex].transform;
-		strutTransform.localScale = new Vector3(strutTransform.localScale.x, strutTransform.localScale.y + 0.1f, strutTransform.localScale.z);
+
+		// transforms strut position
+		strutTransform.position = new Vector3 (strutTransform.position.x, strutTransform.position.y + buildRate, strutTransform.position.z);
+
+		// scales the strut
+//		strutTransform.localScale = new Vector3(strutTransform.localScale.x, strutTransform.localScale.y + 0.1f, strutTransform.localScale.z);
 	}
 
 	void AttachChannel (int strutIndex)

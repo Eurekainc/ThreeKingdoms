@@ -6,6 +6,10 @@ public class Ground : MonoBehaviour {
 
 	public ChannelsMaster masterScript;
 
+	// This platform's bounds
+	private BoxCollider2D collider;
+	public Bounds myBounds;
+
 	public WaterSource waterSource;
 
 	public GameObject waterLevel;
@@ -23,6 +27,11 @@ public class Ground : MonoBehaviour {
 	public bool overflowingForward = false;
 	public bool overflowingBack = false;
 
+	// Structure
+	// could be a channel, windmill, tree, etc...
+	public List<GroundStructure> structures = new List<GroundStructure>();
+	public List<ProcessedResource> resources = new List<ProcessedResource>();
+
 
 	public int groundIndex;
 
@@ -31,6 +40,9 @@ public class Ground : MonoBehaviour {
 		if (masterScript == null) {
 			masterScript = GameObject.Find("ChannelsMaster").GetComponent<ChannelsMaster>();
 		}
+
+		collider = GetComponent<BoxCollider2D>();
+		myBounds = collider.bounds;
 
 		waterLevelBounds = waterLevel.GetComponent<BoxCollider2D>().bounds;
 	}

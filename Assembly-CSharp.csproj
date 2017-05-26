@@ -130,8 +130,16 @@
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\ChannelBuilder.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\ChannelsMaster.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Dragable.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Ground.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\GroundStructure.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\JumpPlayer.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\ProcessedResource.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Structures\Channel.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Structures\Strut.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Structures\TreeResource.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\WaterSource.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\WorkerNPC.cs" />
      <Compile Include="Assets\Scripts\Dragon.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\GlobalGameScript.cs" />

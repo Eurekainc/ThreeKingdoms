@@ -7,10 +7,12 @@ public class WaterSource : MonoBehaviour {
 
 	public ChannelsMaster masterScript;
 
-	public ParticleSystem waterParticles;
+	public ParticleSystem waterParticlesR;
+	public ParticleSystem waterParticlesL;
 
-	public LayerMask groundLayer;
-	public LayerMask channelLayer;
+	// add a small space to the raycast origin so that it doesn't collide with itself
+	private float raycastOffset = 0.01f;
+	public LayerMask waterHitLayer;
 
 	public Bounds myBounds;
 
@@ -41,12 +43,12 @@ public class WaterSource : MonoBehaviour {
 	void Update ()
 	{
 		if (openChannel) {
-			waterParticles.Play();
 			WaterfallHit ();
 			openChannel = false;
 		}
 		if (closeChannel) {
-			waterParticles.Stop();
+			waterParticlesR.Stop();
+			waterParticlesL.Stop();
 			StopFilling();
 			closeChannel = false;
 		}
@@ -63,12 +65,31 @@ public class WaterSource : MonoBehaviour {
 		levelsToFillRight.Clear();
 	}
 
-	void WaterfallHit(){
-		RaycastHit2D hit = Physics2D.Raycast(new Vector3(myBounds.max.x, myBounds.min.y, transform.position.z), -Vector2.up, Mathf.Infinity, groundLayer);
+	void WaterfallHit ()
+	{
+		float rayCastXPos;
+		Debug.Log("transform.eulerAngles.z: " + transform.eulerAngles.z);
+		if (transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180) {
+			waterParticlesL.Play();
+			rayCastXPos = myBounds.min.x - raycastOffset;
+		} else {
+			waterParticlesR.Play();
+			rayCastXPos = myBounds.max.x + raycastOffset;
+		}
+
+		RaycastHit2D hit = Physics2D.Raycast (new Vector3 (rayCastXPos, myBounds.min.y + raycastOffset, transform.position.z), -Vector2.up, Mathf.Infinity, waterHitLayer);
 		if (hit.collider != null) {
-			Ground groundScript = hit.collider.gameObject.GetComponent<Ground>();
-			groundOrigin = groundScript;// test
-			SetFillingOrder();
+			if (hit.transform.gameObject.layer == LayerMask.NameToLayer ("Ground")) {
+				Debug.Log("The ground was hit");
+				Ground groundScript = hit.transform.gameObject.GetComponent<Ground> ();
+				groundOrigin = groundScript;// test
+				SetFillingOrder ();
+			}else if (hit.transform.gameObject.layer == LayerMask.NameToLayer ("Channel")){
+				Debug.Log("A channel was hit");
+				WaterSource waterSourceScript = hit.transform.gameObject.GetComponent<WaterSource>();
+				// add some delay related to the length of the channel
+				waterSourceScript.openChannel = true;
+			}
         }
 	}
 
