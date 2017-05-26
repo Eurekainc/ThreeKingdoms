@@ -128,14 +128,15 @@
      <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
      <Compile Include="Assets\Scripts\Boat.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
-     <Compile Include="Assets\Scripts\ChannelGame\ChannelBuilder.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\ChannelsMaster.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Dragable.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\FallingObject.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Ground.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\GroundStructure.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\JumpPlayer.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\ProcessedResource.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Structures\Channel.cs" />
+     <Compile Include="Assets\Scripts\ChannelGame\Structures\ChannelBuilder.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Structures\Strut.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\Structures\TreeResource.cs" />
      <Compile Include="Assets\Scripts\ChannelGame\WaterSource.cs" />

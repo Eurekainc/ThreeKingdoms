@@ -17,6 +17,7 @@ public class WorkerNPC : MonoBehaviour {
 	public LayerMask groundLayer;
 	public float groundPosition = 0f;
 	public bool grounded = false;// made public for debug
+	public float fallSpeed = 0.1f;
 
 	private bool gotTask = false;
 	public LayerMask structureLayer;
@@ -25,10 +26,10 @@ public class WorkerNPC : MonoBehaviour {
 	// moving
 	public bool moving = false;// made public for debug
 	public float speed = 0.1f;
-	public float fallSpeed = 0.1f;
 	public int direction = 0;// made public for debug
 
 	// fetching resource
+	public bool hasResource = false;
 	public bool fetchingResource = false;
 	public LayerMask resourceLayer;
 
@@ -51,6 +52,9 @@ public class WorkerNPC : MonoBehaviour {
 			RaycastHit2D hit = Physics2D.Raycast (transform.position, -Vector2.up, Mathf.Infinity, groundLayer);
 			if (hit.collider != null) {
 				groundPlatform = hit.transform.gameObject.GetComponent<Ground> ();
+				if (!groundPlatform.workers.Contains (this)) {
+					groundPlatform.workers.Add (this);
+				}
 				groundPosition = hit.collider.bounds.max.y;
 			}
 		}
@@ -67,11 +71,15 @@ public class WorkerNPC : MonoBehaviour {
 		}
 
 		if (moving) {
-			CheckEdge();
+			CheckEdge ();
 			// checking if arrived at target
 			if (CheckIfOverStructure ()) {
 				ArriveAtStructure ();
 			}
+		}
+
+		if (fetchingResource) {
+			CheckIfOverResource();
 		}
 
 		transform.Translate(new Vector3(direction * speed, fallVelocity, 0));
@@ -109,12 +117,18 @@ public class WorkerNPC : MonoBehaviour {
 
 	bool CheckIfOverResource ()
 	{
+		Debug.Log("Check if over resource....");
 		bool arrived = false;
 		Collider2D resource = Physics2D.OverlapCircle (transform.position, 0.1f, resourceLayer);
 
-		// if over a resource
+		// if over a resource and that tis the resource we were aiming for
 		if (resource != null) {
-			fetchingResource = f
+			Debug.Log("Passed over a resource");
+			if (resource.transform == groundPlatform.resources [0].transform) {
+				Debug.Log("ARrived at resource....");
+				PickUpResource ();
+				fetchingResource = false;
+			}
 		}
 
 		CheckEdge();
@@ -161,16 +175,34 @@ public class WorkerNPC : MonoBehaviour {
 
 		moving = true;
 
-//		direction = Random.Range (0, 1) > 0.5f ? 1 : -1;
-		direction = 1;
+		direction = Random.Range (0, 1) > 0.5f ? 1 : -1;
 		
 		CheckEdge();
 	}
 
-	void FetchResource(){
-		FindDirection(groundPlatform.resources[0].transform);
-		fetchingResource = true;
-		CheckIfOverResource ();
+	// this gets called from the ground script when a resource is depleted, so that they can find new fresh resources
+	public void FetchResource ()
+	{
+		if (groundPlatform.resources.Count > 0) {
+			Debug.Log("GOING tO FETCH rESOURCES");
+			FindDirection (groundPlatform.resources [0].transform);
+			fetchingResource = true;
+			CheckIfOverResource ();
+		} else {
+			Idle();
+		}
+	}
+	void PickUpResource ()
+	{
+		if (groundPlatform.resources.Count > 0) {
+			Debug.Log("Pick up resource");
+			groundPlatform.resources[0].TakeResource();
+			fetchingResource = false;
+			hasResource = true;
+			GoToStructure ();
+		} else {
+			Idle();
+		}
 	}
 
 	void GoToStructure ()

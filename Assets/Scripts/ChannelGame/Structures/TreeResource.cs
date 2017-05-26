@@ -16,6 +16,9 @@ public class TreeResource : MonoBehaviour {
 	private float elapsedTime = 0.0f;
 	private bool chopped = false;
 
+	// produce processed resource
+	public GameObject processedResourcePrefab;
+
 	public bool regrowing = false;
 
 	void Start(){
@@ -33,8 +36,15 @@ public class TreeResource : MonoBehaviour {
 				elapsedTime = 0.0f;
 				chopped = false;
 				regrowing = true;
-				gameObject.SetActive(false);// don't want workerNPC to think its found another structure
+
+				GameObject producedResource = (GameObject) Instantiate(processedResourcePrefab, transform.position, Quaternion.identity);
+				ProcessedResource resourceScript = producedResource.GetComponent<ProcessedResource>();
+				groundStructureScript.groundPlatform.resources.Add(resourceScript);
+
 				groundStructureScript.FinishAction();
+
+				gameObject.SetActive(false);// don't want workerNPC to think its found another structure // activate later when regrown
+
 			}
 
 		}

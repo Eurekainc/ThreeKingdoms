@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NUnit.Framework;
 
 public class Ground : MonoBehaviour {
 
@@ -31,6 +32,7 @@ public class Ground : MonoBehaviour {
 	// could be a channel, windmill, tree, etc...
 	public List<GroundStructure> structures = new List<GroundStructure>();
 	public List<ProcessedResource> resources = new List<ProcessedResource>();
+	public List<WorkerNPC> workers = new List<WorkerNPC>();
 
 
 	public int groundIndex;
@@ -137,6 +139,16 @@ public class Ground : MonoBehaviour {
 			Debug.Log("Stop draining the platform... its empty");
 		}
 
+	}
+
+	// Worker management
+	public void ResetResourceFetching ()
+	{
+		for (int i = 0; i < workers.Count; i++) {
+			if (workers [i].fetchingResource) {
+				workers [i].FetchResource();
+			}
+		}
 	}
 
 }

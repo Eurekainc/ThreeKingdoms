@@ -5,11 +5,16 @@ using UnityEditor;
 
 public class GroundStructure : MonoBehaviour {
 
+	// the platform where the structure is located
+	public Ground groundPlatform;
+
 	// structure types
 	public bool tree = false;
 	private TreeResource treeScript;
 	public bool strut = false;
 	private Strut strutScript;
+	public bool channelBuilder = false;
+	private ChannelBuilder channelBuilderScript;
 	public bool channel = false;
 	private Channel channelScript;
 	public bool windmill = false;
@@ -23,7 +28,11 @@ public class GroundStructure : MonoBehaviour {
 			treeScript = GetComponent<TreeResource>();
 		} else if (strut) {
 			strutScript = GetComponent<Strut>();
-		} else if (channel) {
+		}
+		else if (channelBuilder) {
+			channelBuilderScript = GetComponent<ChannelBuilder>();
+		}
+		  else if (channel) {
 			channelScript = GetComponent<Channel>();
 		} else if (windmill) {
 			Debug.Log("Get the windmill");
@@ -48,7 +57,18 @@ public class GroundStructure : MonoBehaviour {
 			treeScript.Chop();
 		} else if (strut) {
 			Debug.Log("Build the strut");
-			strutScript.Build();
+			if (npc.hasResource){
+				strutScript.Build(npc);
+			}else{
+				npc.FetchResource();
+			}
+		}else if (channelBuilder) {
+			Debug.Log("Construct the channel");
+			if (npc.hasResource){
+				channelBuilderScript.Build(npc);
+			}else{
+				npc.FetchResource();
+			}
 		} else if (channel) {
 			Debug.Log("Build the channel");
 		} else if (windmill) {

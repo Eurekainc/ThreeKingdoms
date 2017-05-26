@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class Strut : MonoBehaviour {
 
+	private GroundStructure groundStructureScript;
+
 	public float workTime = 2.0f;
 	public int cost = 3;
 
 	public float heightIncrease = 0.01f;
 
-	public void Build ()
-	{
-		Debug.Log("Building the strut");
-		StartCoroutine(BuildStrut());
+	void Start(){
+		groundStructureScript = GetComponent<GroundStructure>();
 	}
 
-	IEnumerator BuildStrut(){
+	public void Build (WorkerNPC npc)
+	{
+		Debug.Log("Building the strut");
+		StartCoroutine(BuildStrut(npc));
+	}
+
+	IEnumerator BuildStrut(WorkerNPC npc){
 		yield return new WaitForSeconds(workTime);
 		Debug.Log("Built the strut");
 		transform.position = new Vector3 (transform.position.x, transform.position.y + heightIncrease, transform.position.z);
-		StartCoroutine(BuildStrut());
+		npc.hasResource = false;
+		npc.FetchResource();
 	}
 }
