@@ -24,12 +24,10 @@ public class Ground : MonoBehaviour {
 	public float elapsedTime = 0.0f;
 	public float fillingRate = 1.0f;//update level every x seconds
 
-	// regulate overflowing
-	public bool overflowingForward = false;
-	public bool overflowingBack = false;
 
 	// Structure
 	// could be a channel, windmill, tree, etc...
+	public List<Strut> struts = new List<Strut>(); 
 	public List<GroundStructure> structures = new List<GroundStructure>();
 	public List<ProcessedResource> resources = new List<ProcessedResource>();
 	public List<WorkerNPC> workers = new List<WorkerNPC>();
@@ -147,6 +145,15 @@ public class Ground : MonoBehaviour {
 		for (int i = 0; i < workers.Count; i++) {
 			if (workers [i].fetchingResource) {
 				workers [i].FetchResource();
+			}
+		}
+	}
+
+	public void ResetStructureBuilding ()
+	{
+		for (int i = 0; i < workers.Count; i++) {
+			if (workers [i].structureToBuild != null) {
+				workers [i].FindWork();
 			}
 		}
 	}

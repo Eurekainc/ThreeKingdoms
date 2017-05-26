@@ -11,8 +11,9 @@ public class Strut : MonoBehaviour {
 
 	public float heightIncrease = 0.01f;
 
-	void Start(){
-		groundStructureScript = GetComponent<GroundStructure>();
+	void Start ()
+	{
+		groundStructureScript = GetComponent<GroundStructure> ();
 	}
 
 	public void Build (WorkerNPC npc)
@@ -25,6 +26,9 @@ public class Strut : MonoBehaviour {
 		yield return new WaitForSeconds(workTime);
 		Debug.Log("Built the strut");
 		transform.position = new Vector3 (transform.position.x, transform.position.y + heightIncrease, transform.position.z);
+		if (!groundStructureScript.groundPlatform.struts.Contains(this)) {
+			groundStructureScript.groundPlatform.struts.Add(this);
+		}
 		npc.hasResource = false;
 		npc.FetchResource();
 	}

@@ -71,6 +71,8 @@ public class GroundStructure : MonoBehaviour {
 			}
 		} else if (channel) {
 			Debug.Log("Build the channel");
+			// no resources needed to erect a channel
+			channelScript.Build(npc);
 		} else if (windmill) {
 			Debug.Log("Build the windmill");
 		} else if (waterWheel) {
@@ -80,6 +82,12 @@ public class GroundStructure : MonoBehaviour {
 
 	public void FinishAction(){
 		workerScript.FinishedWork();
+	}
+
+	public void Landed(){
+		if (channel){
+			channelScript.Landed();
+		}
 	}
 
 }

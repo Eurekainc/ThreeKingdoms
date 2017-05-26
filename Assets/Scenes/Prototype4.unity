@@ -949,8 +949,7 @@ MonoBehaviour:
   currentFlowRateOut: 0
   elapsedTime: 0
   fillingRate: 0
-  overflowingForward: 0
-  overflowingBack: 0
+  struts: []
   structures: []
   resources: []
   workers: []
@@ -1079,8 +1078,7 @@ MonoBehaviour:
   currentFlowRateOut: 0
   elapsedTime: 0
   fillingRate: 0
-  overflowingForward: 0
-  overflowingBack: 0
+  struts: []
   structures: []
   resources: []
   workers: []
@@ -2353,7 +2351,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4050985154081224, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.47
+      value: -4.25
       objectReference: {fileID: 0}
     - target: {fileID: 4050985154081224, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2389,6 +2387,11 @@ Prefab:
       propertyPath: m_Size.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114171578168920620, guid: 359445fc7ca8340abb8f93bcaa990a38,
+        type: 2}
+      propertyPath: groundPlatform
+      value: 
+      objectReference: {fileID: 1479845623}
     m_RemovedComponents:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
@@ -2521,7 +2524,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4050985154081224, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.4700003
+      value: -4.25
       objectReference: {fileID: 0}
     - target: {fileID: 4050985154081224, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2560,6 +2563,11 @@ Prefab:
       propertyPath: m_Size.x
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114171578168920620, guid: 359445fc7ca8340abb8f93bcaa990a38,
+        type: 2}
+      propertyPath: groundPlatform
+      value: 
+      objectReference: {fileID: 1479845623}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 359445fc7ca8340abb8f93bcaa990a38, type: 2}
   m_IsPrefabParent: 0
@@ -2941,8 +2949,7 @@ MonoBehaviour:
   currentFlowRateOut: 0
   elapsedTime: 0
   fillingRate: 0
-  overflowingForward: 0
-  overflowingBack: 0
+  struts: []
   structures:
   - {fileID: 1928816138}
   - {fileID: 1197756667}
@@ -3959,8 +3966,7 @@ MonoBehaviour:
   currentFlowRateOut: 0
   elapsedTime: 0
   fillingRate: 0
-  overflowingForward: 0
-  overflowingBack: 0
+  struts: []
   structures:
   - {fileID: 66140212}
   resources: []

@@ -75,6 +75,7 @@ public class FallingObject : MonoBehaviour {
 			}
 		} else if (structure) {
 			GroundStructure groundStructureScript = GetComponent<GroundStructure>();
+			groundStructureScript.Landed();
 			if (!groundPlatform.structures.Contains (groundStructureScript)) {
 				groundPlatform.ResetResourceFetching ();
 				groundPlatform.structures.Add (groundStructureScript);

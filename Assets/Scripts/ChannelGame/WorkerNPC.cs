@@ -89,7 +89,7 @@ public class WorkerNPC : MonoBehaviour {
 
 	// My Classes
 
-	void FindWork(){
+	public void FindWork(){
 		if (groundPlatform.structures.Count > 0) {
 			structureToBuild = groundPlatform.structures [0];
 			gotTask = true;
